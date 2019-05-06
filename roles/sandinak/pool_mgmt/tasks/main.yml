@@ -1,0 +1,10 @@
+---
+- name: setup pool mgmt
+  tags: pool_mgmt
+  block: 
+    - name: deploy {{ pool_mgmt_git }} into {{ pool_mgmt_target }}
+      git:
+        repo: "{{ pool_mgmt_git }}"
+        dest: "{{ pool_mgmt_target }}"
+    
+#- name: setup service

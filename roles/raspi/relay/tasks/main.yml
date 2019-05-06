@@ -1,0 +1,13 @@
+---
+- name: install pip
+  become: yes
+  apt:
+    state: present
+    name: python-pip
+
+- name: install python modules
+  become: yes
+  pip:
+    state: present
+    name:  "{{ relay_modules }}"
+...

@@ -1,0 +1,10 @@
+---
+- name: add lines to config.txt
+  become: yes
+  lineinfile:
+    path: /boot/config.txt
+    regexp: "{{ item }}"
+    line: "{{ item }}"
+  with_items: "{{ global.config_txt|default([]) + config_txt }}"
+  notify: reboot raspi
+...

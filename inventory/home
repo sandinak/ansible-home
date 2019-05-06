@@ -1,0 +1,10 @@
+
+[pi]
+pool-pi
+garage-pi
+
+[pool]
+pool-pi ansible_host=192.168.15.233
+
+[home:children]
+pi

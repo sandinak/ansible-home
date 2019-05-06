@@ -1,0 +1,12 @@
+---
+nodejs_apt_packages:
+  - nodejs
+  - libavahi-compat-libdnssd-dev
+  - npm
+
+nodejs_npm_packages:
+  - homebridge
+  - homebridge-http-switch
+  - homebridge-http-temperature-sensor
+  - homebridge-gpio-services
+...

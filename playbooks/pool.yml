@@ -1,0 +1,12 @@
+---
+
+- name: configure pool
+  hosts: pool
+  gather_facts: no
+  roles:
+    - raspi/config
+    - raspi/relay
+    - raspi/therm_sensors
+    - raspi/airplay
+    - raspi/wireless/disable_wifi_power_mgmt
+    - sandinak/pool_mgmt

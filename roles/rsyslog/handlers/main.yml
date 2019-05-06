@@ -1,0 +1,7 @@
+---
+- name: restart rsyslogd
+  become: yes
+  service: 
+    name: rsyslogd
+    state: restarted
+...

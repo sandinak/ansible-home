@@ -1,0 +1,38 @@
+- name: clone {{ shairport_sync_git }} 
+        into {{ shairport_sync_target }}
+  git: 
+    repo: "{{ shairport_sync_git }}"
+    dest: "{{ shairport_sync_target }}"
+ 
+- name: create configure for shairport sync
+  shell: 
+    autoreconf -i -f
+  args: 
+    chdir: "{{ shairport_sync_target }}"
+    creates: /home/pi/shairport-sync/configure
+
+- name: run configure for shairport sync
+  shell: ./configure 
+          --with-alsa 
+          --with-avahi 
+          --with-ssl=openssl 
+          --with-systemd 
+          --with-metadata
+  args: 
+    chdir: "{{ shairport_sync_target }}"
+    creates: /home/pi/shairport-sync/Makefile
+
+- name: build shairport sync
+  shell: make -j 4
+  args: 
+    chdir: "{{ shairport_sync_target }}"
+    creates: /home/pi/shairport-sync/shairport-sync
+
+- name: install shairport sync
+  become: yes
+  shell: make install
+  args: 
+    chdir: "{{ shairport_sync_target }}"
+    creates: 
+      - /usr/local/bin/shairport-sync
+      - /lib/systemd/system/shairport-sync.service

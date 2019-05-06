@@ -1,0 +1,12 @@
+---
+- name: install apt packages
+  become: yes
+  apt:
+    name: "{{ nodejs_apt_packages }}"
+
+- name: install homebridge
+  become: yes
+  npm:
+    state: present
+    global: yes
+    name: "{{nodejs_npm_packages}}" 

@@ -1,0 +1,18 @@
+---
+- name: deploy groups for each user that match name and uid
+  become: yes
+  group:
+    name: '{{item.name}}'
+    gid: '{{item.uid}}'
+  with_items: "{{users}}"
+
+- name: deploy users
+  become: yes
+  user:
+    name: '{{item.name}}'
+    state: '{{item.state | default("present")}}'
+    uid: '{{item.uid}}'
+    group: '{{item.name}}'
+    groups: '{{item.groups}}'
+    home: '{{item.home | default("/home/" + item.name)}}'
+  with_items: "{{ users }}"

@@ -1,0 +1,5 @@
+---
+pool_mgmt_git: https://github.com/sandinak/pool_mgmt.git
+
+pool_mgmt_target: /home/pi/pool_mgmt
+...

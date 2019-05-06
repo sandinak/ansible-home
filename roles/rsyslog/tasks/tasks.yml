@@ -1,0 +1,11 @@
+---
+- name: setup rsyslog server
+  become: yes
+  lineinfile:
+    path: /etc/rsyslog.d/synology.conf
+    create: yes
+    regexp: "@{{rsyslog_server}}"
+    line: "*.*   @{{rsyslog_server}}"
+  notify: restart rsyslog
+
+...

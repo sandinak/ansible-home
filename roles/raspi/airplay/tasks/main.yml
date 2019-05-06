@@ -1,0 +1,45 @@
+---
+
+- name: install packages
+  become: yes
+  apt: 
+    state: present
+    name: "{{ item }}"
+  with_items: "{{ airplay_packages }}"
+
+- include: shairport-sync.yml
+
+- block: 
+    - name: check audio config for 3.5mm headphones
+      become: yes
+      check_mode: no
+      changed_when: false
+      shell: axmixer cget numid=3
+      register: _amixer_id_3
+      failed_when: '"values=1" not in _amixer_id_3.stdout'
+
+  rescue:
+    - name: configure for 3.5mm headphones 
+      become: yes
+      shell: amixer cset numid=3 1
+      
+- block:
+    - name: set volume 100%
+      become: yes
+      check_mode: no
+      changed_when: false
+      shell: amixer sget PCM,0
+      register: _amixer_pcm
+      failed_when: '"Playback 400 [100%]" not in _amixer_pcm.stdout'
+  rescue: 
+    - name: set volume 100%
+      become: yes
+      shell: amixer sget PCM,0 100%
+
+- name: start service shairport-sync
+  become: yes
+  service:
+    name: shairport-sync
+    state: started
+
+...

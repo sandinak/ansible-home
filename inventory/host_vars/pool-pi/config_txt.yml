@@ -1,0 +1,3 @@
+---
+config_txt:
+  - dtoverlay=w1-gpio 

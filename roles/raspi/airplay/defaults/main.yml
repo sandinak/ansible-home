@@ -1,0 +1,18 @@
+---
+airplay_packages:
+  - autoconf
+  - automake
+  - avahi-daemon
+  - build-essential
+  - git
+  - libasound2-dev
+  - libavahi-client-dev
+  - libconfig-dev
+  - libdaemon-dev
+  - libpopt-dev
+  - libssl-dev
+  - libtool
+  - xmltoman
+
+shairport_sync_git: https://github.com/mikebrady/shairport-sync.git
+shairport_sync_target: /home/pi/shairport-sync

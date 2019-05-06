@@ -1,0 +1,8 @@
+---
+- name: enable kern modules
+  become: yes
+  modprobe: 
+    state: present
+    name: "{{ item }}"
+  with_items: "{{ therm_sensors.kernel_modules }}"
+...

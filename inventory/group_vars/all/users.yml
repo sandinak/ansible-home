@@ -1,0 +1,12 @@
+---
+
+users:
+  - name: branson
+    uid: 10652
+    gid: 20
+    password: $6$Cpn1U8RAQ1tlrYrT$x4Yzx4iCyqlJLFNLtEkpLFJlMXGk6mEkIJH3.TX6i93oYUZBGSsqSm/82PNxE3QADLts3S1UmK5AHIsy6F7h91
+    sudo: yes
+    groups: 
+      - root
+      - sudo 
+    
