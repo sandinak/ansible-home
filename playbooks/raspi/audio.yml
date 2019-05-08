@@ -1,0 +1,7 @@
+---
+- name: configure pi-audio
+  hosts: pi-audio
+  gather_facts: yes
+  roles:
+    - raspi/airplay
+    - raspi/wireless/disable_wifi_power_mgmt

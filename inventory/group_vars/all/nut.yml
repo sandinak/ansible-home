@@ -1,0 +1,7 @@
+---
+nut_ups_vendor_ids:
+  '0764':
+    name: ups
+    driver: usbhid-ups
+    port: auto
+    pollfreq: 60

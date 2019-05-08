@@ -36,3 +36,18 @@
     creates: 
       - /usr/local/bin/shairport-sync
       - /lib/systemd/system/shairport-sync.service
+
+- name: copy startup file to /etc/init.d
+  become: yes
+  copy:
+    remote_src: yes
+    src: /home/pi/shairport-sync/scripts/shairport-sync
+    dest: /etc/init.d/shairport-sync
+    
+- name: set startup link in /etc/rc2.d/
+  become: yes
+  file: 
+    state: link
+    src: /etc/init.d/shairport-sync
+    path: /etc/rc2.d/S02shairport-sync
+  

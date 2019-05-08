@@ -1,0 +1,6 @@
+---
+- name: configure audio
+  become: yes
+  shell: /etc/init.d/audio
+
+...

@@ -1,0 +1,6 @@
+[upsmon_local]
+        password  = {{secrets.default_password}}"
+        upsmon master
+[upsmon_remote]
+        password  = {{secrets.default_password}}"
+        upsmon slave

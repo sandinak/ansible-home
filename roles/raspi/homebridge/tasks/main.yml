@@ -9,4 +9,5 @@
   npm:
     state: present
     global: yes
-    name: "{{nodejs_npm_packages}}" 
+    name: "{{item}}"
+  with_items: "{{nodejs_npm_packages}}" 

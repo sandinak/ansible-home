@@ -1,0 +1,5 @@
+---
+- name: install UPS mgmt
+  hosts: pi-ups
+  roles: 
+    - raspi/nut

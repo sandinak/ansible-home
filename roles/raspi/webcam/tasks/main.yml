@@ -1,0 +1,15 @@
+---
+- name: install packages
+  become: yes
+  tags: webcam
+  apt: 
+    state: present
+    name: "{{ webcam_packages }}"
+    
+
+
+- include: camera.yml 
+  tags: webcam
+  
+- include: motion.yml
+  tags: webcam

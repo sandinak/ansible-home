@@ -1,0 +1,58 @@
+---
+- name: get {{ motion_deb_pkg_url|basename }}
+  get_url: 
+    url: "{{ motion_deb_pkg_url }}"
+    dest: "/tmp/{{ motion_deb_pkg_url|basename }}"
+
+- name: install {{motion_deb_pkg_url|basename}}
+  become: yes
+  shell: dpkg -i /tmp/{{motion_deb_pkg_url|basename}}
+  args:
+    creates: /etc/motion/motion.conf
+
+- name: handle images dir if configured
+  block: 
+    - name: make dir for images
+      become: yes
+      file:
+        path: "{{webcam_images_dir}}"
+        state: directory
+        mode: 0777
+        owner: root
+        group: root
+      when: webcam_images_dir is defined
+
+    - name: add {{webcam_images_dir}} to config 
+      become: yes
+      lineinfile:
+        path: /etc/motion/motion.conf
+        regexp: ".*target_dir."
+        line: "target_dir {{webcam_images_dir}}"
+      notify: restart motion
+  when: webcam_images_dir is defined
+
+- name: configure /etc/motion/motion.conf
+  become: yes
+  lineinfile: 
+    path: /etc/motion/motion.conf
+    create: yes
+    regexp: "{{ item.split(' ')[0]}}.*"
+    line: "{{item}}"
+  with_items: "{{ motion_config }}"
+  notify: restart motion
+
+- name: configure /etc/default/motion for daemon
+  become: yes
+  lineinfile:
+    path: /etc/default/motion
+    regexp: "start_motion_daemon=.*"
+    line: "start_motion_daemon=yes"
+  notify: restart motion
+
+
+- name: start service motion
+  become: yes
+  service:
+    name: motion
+    state: started
+... 

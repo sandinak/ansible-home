@@ -1,0 +1,6 @@
+---
+nut_packages: 
+  - nut
+  - nut-client
+  - nut-server
+  - usbutils

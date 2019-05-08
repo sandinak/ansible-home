@@ -1,10 +1,19 @@
 
-[pi]
+[raspi]
+garage-pi 
 pool-pi
-garage-pi
 
 [pool]
-pool-pi ansible_host=192.168.15.233
+pool-pi 
+
+[pi-webcam]
+garage-pi
+
+[pi-ups]
+garage-pi
+
+[pi-audio:children]
+raspi
 
 [home:children]
-pi
+raspi

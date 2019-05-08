@@ -1,0 +1,38 @@
+---
+- name: enable config for camera
+  become: yes
+  lineinfile: 
+    path: /boot/config.txt
+    regexp: "{{item.split('=')[0]}}=.*"
+    line: "{{item}}"
+  notify: reboot raspi
+  with_items:
+    - start_x=1
+    - gpu_mem=128
+    - dtparam=i2c_arm=on
+
+- name: setup webcam module {{webcam_module}}
+  tags: webcam
+  become: yes
+  modprobe: 
+    name: "{{webcam_module}}"
+    state: present
+
+- name: setup module at start
+  become: yes
+  lineinfile:
+    path: /etc/modules
+    regexp: ".*{{webcam_module}}.*"
+    line: "{{webcam_module}}"
+
+- meta: flush_handlers
+
+- name: check for camera 
+  tags: webcam
+  become: yes
+  shell: vcgencmd get_camera
+  register: _get_camera
+  failed_when: '"detected=0" in _get_camera.stdout'
+  changed_when: false
+
+...

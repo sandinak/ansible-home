@@ -1,0 +1,100 @@
+---
+- name: install nut packages
+  tags: ups
+  become: yes
+  apt:
+    state: present
+    name: "{{ nut_packages }}"
+  register: _nut_packages
+  
+- name: verify UPS is attached
+  become: yes
+  tags: ups
+  shell: lsusb | grep -i UPS 
+  register: _lsusb_ups
+  failed_when: '"UPS" not in _lsusb_ups.stdout'
+  changed_when: false
+  
+- name: extract UPS info 
+  tags: ups
+  set_fact:
+   _vendor_id: "{{ _lsusb_ups.stdout.split(' ')[5].split(':')[0] }}"
+   _ups_data: "{{ _lsusb_ups.stdout }}"
+   _ups_name: "{{ _lsusb_ups.stdout.split(' ')[6:] | join(' ') }}"
+
+- debug: 
+    var: nut_ups_vendor_ids
+    verbosity: 1
+
+- name: verify vendor id {{_vendor_id}} is in inventory
+  tags: ups
+  set_fact: 
+    _ups_config: "{{ nut_ups_vendor_ids[_vendor_id] }}"
+  failed_when: _vendor_id not in nut_ups_vendor_ids
+
+
+- name: configure UPS {{ _ups_name }}
+  tags: ups
+  become: yes
+  template: 
+    dest: /etc/nut/ups.conf
+    src: etc/nut/ups.conf
+  notify: 
+    - reload nut-driver
+    - reload nut-server
+    - reload nut-monitor
+
+- name: configure listener for nut
+  tags: ups
+  become: yes
+  lineinfile: 
+    path: /etc/nut/upsd.conf
+    regexp: "LISTEN.*"
+    line: "LISTEN {{ansible_default_ipv4.address}}"
+  notify: 
+    - reload nut-server
+    - reload nut-monitor
+  
+- name: configure users from template
+  tags: ups
+  become: yes
+  template: 
+    src: etc/nut/upsd.users
+    dest: /etc/nut/upsd.users
+    owner: root
+    group: nut
+    mode: 0640
+  notify: reload nut-server
+
+- name: configure for network service
+  tags: ups
+  become: yes
+  lineinfile: 
+    path: /etc/nut/nut.conf
+    regexp: "MODE=.*"
+    line: "MODE=netserver"
+  notify: reload nut-server
+
+- name: configure monitoring
+  tags: ups
+  become: yes
+  lineinfile:
+    path: /etc/nut/upsmon.conf
+    regexp: "^MONITOR.*"
+    line: MONITOR {{_ups_config.name}}@localhost 
+          1 upsmon_local {{secrets.default_password}} master
+  notify: reload nut-monitor
+
+- name: start services if needed
+  become: yes
+  service: 
+    state: started
+    enabled: yes
+    name: "{{item}}"
+  with_items:
+    - nut-driver
+    - nut-server
+    - nut-monitor
+  when: _nut_packages is changed
+ 
+...

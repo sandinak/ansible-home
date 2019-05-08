@@ -1,0 +1,11 @@
+---
+- name: reboot raspi
+  become: yes
+  reboot: 
+  
+- name: restart motion
+  become: yes
+  service: 
+    state: restarted
+    name: motion
+    

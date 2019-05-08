@@ -1,0 +1,31 @@
+---
+webcam_packages:
+  - libjpeg-dev 
+  - gettext 
+  - libmicrohttpd-dev 
+  - libavformat-dev 
+  - libavcodec-dev 
+  - libavutil-dev 
+  - libswscale-dev 
+  - libavdevice-dev 
+  - libwebp-dev 
+  - mysql-common 
+  - libmariadbclient18 
+  - libpq5
+  
+motion_deb_pkg_url: https://github.com/Motion-Project/motion/releases/download/release-4.2.1/pi_stretch_motion_4.2.1-1_armhf.deb
+
+webcam_images_dir: /home/pi/webcam
+
+motion_config:
+  - daemon on
+  - stream_localhost off
+  - text_left {{inventory_hostname|upper}} : {{ansible_default_ipv4.address}}
+#  - stream_maxrate 100
+#  - framerate 100
+#  - width 640
+#  - height 480
+
+# NOTE: this is 4 ell 2 .. not 4 1 2 .. not sure what idiot thought
+#   that was a good idea.
+webcam_module: bcm2835-v4l2
