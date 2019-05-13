@@ -20,7 +20,7 @@ webcam_images_dir: /home/pi/webcam
 motion_config:
   - daemon on
   - stream_localhost off
-  - text_left {{inventory_hostname|upper}} : {{ansible_default_ipv4.address}}
+  - 'text_left {{inventory_hostname|upper}} : {{ansible_default_ipv4.address}}'
 #  - stream_maxrate 100
 #  - framerate 100
 #  - width 640

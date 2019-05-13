@@ -1,0 +1,5 @@
+---
+- name: restart iw_config
+  service: 
+    name: iw_config
+    state: restarted

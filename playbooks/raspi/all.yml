@@ -22,14 +22,13 @@
         state: present
         user: pi
         key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-    
-
 
 - name: configure raspis
   hosts: raspi
   gather_facts: yes
   roles:
     - raspi/config
+    - raspi/iw_config
 
 - import_playbook: pool.yml
 - import_playbook: webcam.yml

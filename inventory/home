@@ -15,5 +15,9 @@ garage-pi
 [pi-audio:children]
 raspi
 
+[macs]
+val
+
 [home:children]
 raspi
+macs

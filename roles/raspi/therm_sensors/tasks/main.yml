@@ -6,4 +6,16 @@
     name: "{{ item }}"
   with_items: "{{ therm_sensors.kernel_modules }}"
 
+- name: add lines to modules
+  become: yes
+  lineinfile: 
+    path: /etc/modules
+    regexp: "{{item}}"
+    line: "{{item}}"
+  with_items: "{{ therm_sensors.kernel_modules }}"
+  
+- name: detect thermal sensors
+  become: yes
+  shell: ls /sys/bus/w1/devices
+  
 ...
