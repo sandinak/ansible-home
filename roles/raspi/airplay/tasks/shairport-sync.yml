@@ -44,10 +44,12 @@
     src: /home/pi/shairport-sync/scripts/shairport-sync
     dest: /etc/init.d/shairport-sync
     
-- name: set startup link in /etc/rc2.d/
+- name: set startup via systemd	
   become: yes
-  file: 
-    state: link
-    src: /etc/init.d/shairport-sync
-    path: /etc/rc2.d/S02shairport-sync
+  systemd: 
+    name: shairport-sync
+    daemon_reload: yes
+    state: started
+    enabled: yes
+    force: yes 
   

@@ -1,0 +1,6 @@
+---
+- name: setup raspi config
+  hosts: pi-builder
+  tasks:
+    - name: check for mount
+      
