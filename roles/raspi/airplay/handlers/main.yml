@@ -3,4 +3,9 @@
   become: yes
   shell: /etc/init.d/audio
 
+- name: restart shairport-sync
+  become: yes
+  service:
+    name: shairport-sync
+    state: restarted
 ...

@@ -37,6 +37,15 @@
       - /usr/local/bin/shairport-sync
       - /lib/systemd/system/shairport-sync.service
 
+- name: install config files
+  become: yes
+  copy: 
+    src: "{{item}}"
+    dest: "/{{item}}"
+  with_items: 
+    - usr/local/etc/shairport-sync.conf
+  notify: restart shairport-sync
+    
 - name: copy startup file to /etc/init.d
   become: yes
   copy:

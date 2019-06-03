@@ -1,5 +1,6 @@
 ---
 - name: install iw_config config
+  become: yes
   copy:
     src: "{{item}}"
     dest: "/{{item}}"
@@ -8,11 +9,12 @@
     mode: 0755
   with_items: 
     - etc/init.d/iw_config
-    - /lib/systemd/system/iw_config.service
+    - lib/systemd/system/iw_config.service
   notify: restart iw_config
 
 - name: setup service
-  service: 
+  become: yes
+  systemd: 
     name: iw_config
     enabled: yes
     state: started

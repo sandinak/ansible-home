@@ -4,7 +4,8 @@ ansible_user: pi
 raspi_default_password: raspberry
 
 # use the site pw if set
-ansible_ssh_pass: "{{ secrets.default_password }}"
+#ansible_ssh_pass: "{{ default_password }}"
 
 global: 
-  config_txt: []
+  config_txt: 
+    - audio_pwm_mode=2

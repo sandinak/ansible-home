@@ -1,2 +1,15 @@
 ---
 config_txt: []
+
+raspi_packages:
+  - gpg
+  - git
+  - zsh
+  - lsof
+  - tcpdump
+  - nmap
+  - python-pip
+  - collectd
+
+pip_packages:
+  - pexpect

@@ -1,4 +1,14 @@
 ---
+- name: set timezone
+  become: yes
+  shell: tzselect {{timezone}}
+
+- name: set tz perm
+  become: yes
+  copy:
+    path: /etc/timezome
+    content: "{{timezone}}"
+
 - name: get {{ motion_deb_pkg_url|basename }}
   get_url: 
     url: "{{ motion_deb_pkg_url }}"

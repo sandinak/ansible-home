@@ -4,9 +4,15 @@ localhost
 [raspi]
 garage-pi 
 pool-pi
+pool-pi-dev
+deck-pi
 
 [pool]
 pool-pi 
+pool-pi-dev
+
+[dev]
+pool-pi-dev
 
 [pi-webcam]
 garage-pi

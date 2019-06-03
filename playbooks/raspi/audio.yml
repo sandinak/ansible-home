@@ -3,5 +3,6 @@
   hosts: pi-audio
   gather_facts: yes
   roles:
-    - raspi/airplay
+#    - raspi/airplay
+    - raspi/squeezebox
     - raspi/wireless/disable_wifi_power_mgmt

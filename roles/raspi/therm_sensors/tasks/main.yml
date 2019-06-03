@@ -1,9 +1,8 @@
 ---
+# modprobe ansible module doth not work
 - name: enable kern modules
   become: yes
-  modprobe: 
-    state: present
-    name: "{{ item }}"
+  shell: modprobe {{ item }} 
   with_items: "{{ therm_sensors.kernel_modules }}"
 
 - name: add lines to modules
@@ -17,5 +16,5 @@
 - name: detect thermal sensors
   become: yes
   shell: ls /sys/bus/w1/devices
-  
+
 ...
