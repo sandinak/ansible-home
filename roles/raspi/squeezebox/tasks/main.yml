@@ -1,0 +1,5 @@
+---
+- name: install squeezebox
+  become: yes
+  apt:
+    name: squeezelite

@@ -1,0 +1,10 @@
+--- 
+- name: build image for raspi 
+  hosts: pi-builder
+  tasks:
+    - name: detect sd card
+      shell: 
+        diskutil list |
+        grep -A 3 Windows_FAT_32 |
+        head -1 |
+        awk '{ print $1 }' 
