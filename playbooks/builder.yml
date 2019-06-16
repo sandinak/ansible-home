@@ -1,6 +1,36 @@
 ---
 - name: setup raspi config
   hosts: pi-builder
+  vars:
+    iso_path: ~/Documents/Images/2019-04-08-raspbian-stretch-lite.img
+
   tasks:
     - name: check for mount
+      shell: 
+        diskutil list |
+        grep -B 4 FAT_32 |
+        head -1 |
+        awk '{ print $1 }'
+      register: _diskutil_list
+      failed_when: _diskutil_list.stdout_lines | length == 0
       
+    - set_fact:
+        disk_device_name: "{{ _diskutil_list.stdout_lines.split('/')[-1] }}"
+     
+    - name: unmount disk
+      shell: diskutil unmountDisk {{disk_device_name}}
+    
+    - name: burn image
+      shell: dd 
+        if={{iso_path}} 
+        of=/dev/r{{disk_device_name}}
+        bs=1512k
+    
+    - name: check for mount 
+      shell: ls /Volumes/boot
+      
+    - name: enable ssh
+      shell: touch /Volumes/boot/ssh
+      
+  roles: 
+    - role: pi-builder/wifi

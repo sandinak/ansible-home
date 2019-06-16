@@ -4,7 +4,9 @@
   apt: 
     state: latest
     upgrade: yes
+    update_cache: yes
     autoremove: yes
+    autoclean: yes
  
 - name: install base packages {{ raspi_packages | join(',') }}
   become: yes

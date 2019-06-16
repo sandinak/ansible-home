@@ -8,4 +8,5 @@ raspi_default_password: raspberry
 
 global: 
   config_txt: 
+    - dtparam=audio=on
     - audio_pwm_mode=2
