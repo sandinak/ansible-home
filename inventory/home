@@ -1,11 +1,12 @@
 [pi-builder]
-localhost
+localhost ansible_connection=local
 
 [raspi]
 garage-pi 
 pool-pi
 pool-pi-dev
 deck-pi
+sub-pi
 
 [pool]
 pool-pi 

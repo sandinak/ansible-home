@@ -1,13 +1,81 @@
 ---
-- name: install apt packages
-  become: yes
-  apt:
-    name: "{{ nodejs_apt_packages }}"
-
 - name: install homebridge
+  tags: homebridge
   become: yes
-  npm:
-    state: present
-    global: yes
-    name: "{{item}}"
-  with_items: "{{nodejs_npm_packages}}" 
+  block:
+    - name: install apt packages
+      apt:
+        name: "{{ nodejs_apt_packages }}"
+
+    - name: install homebridge
+      become: yes
+      npm:
+        state: present
+        global: yes
+        name: "{{item}}"
+      with_items: "{{nodejs_npm_packages}}" 
+
+    - name: setup runtime group
+      become: yes
+      group: 
+        name: homebridge 
+        gid: 995
+ 
+    - name: put pi user in group
+      become: yes
+      user:
+        name: pi
+        append: yes
+        groups: 
+          - homebridge
+
+    - name: setup runtime user
+      become: yes
+      user:
+        name: homebridge 
+        uid: 998
+        group: 995
+        comment: homebridge system account
+        home: /home/homebridge
+        shell: /bin/bash
+        generate_ssh_key: no
+        create_home: yes
+ 
+    - name: make setup dir  
+      become: yes
+      file:
+        state: directory
+        path: /var/lib/homebridge
+        owner: homebridge
+        group: homebridge
+
+    - name: configure homebridge
+      tags: config
+      template:
+        src: "{{item}}.j2"
+        dest: "/{{item}}"
+        owner: homebridge
+        group: homebridge
+      with_items:
+        - var/lib/homebridge/config.json
+      notify: restart homebridge
+
+    - name: install startup files
+      become: yes
+      copy:
+        src: "{{item}}"
+        dest: "/{{item}}"
+      with_items:
+        - etc/default/homebridge
+        - etc/systemd/system/homebridge.service
+
+    - name: setup service
+      tags: config
+      become: yes
+      service:
+        name: homebridge
+        enabled: yes
+        state: started
+
+...
+ 

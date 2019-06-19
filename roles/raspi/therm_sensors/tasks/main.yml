@@ -1,9 +1,18 @@
 ---
 # modprobe ansible module doth not work
-- name: enable kern modules
+- name: get modules
+  become: yes
+  changed_when: false
+  check_mode: no
+  shell: lsmod |
+    awk '{ print $1 }'
+  register: _installed_modules
+  
+- name: enable kern modules that aren't enabled
   become: yes
   shell: modprobe {{ item }} 
-  with_items: "{{ therm_sensors.kernel_modules }}"
+  with_items: "{{ therm_sensors.kernel_modules | 
+                  difference(_installed_modules.stdout_lines) }}"
 
 - name: add lines to modules
   become: yes
@@ -12,9 +21,12 @@
     regexp: "{{item}}"
     line: "{{item}}"
   with_items: "{{ therm_sensors.kernel_modules }}"
-  
+
+
 - name: detect thermal sensors
   become: yes
+  changed_when: false
+  check_mode: no
   shell: ls /sys/bus/w1/devices
 
 ...

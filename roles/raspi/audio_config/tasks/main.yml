@@ -1,0 +1,22 @@
+---
+- name: install audio_config
+  become: yes
+  copy: 
+    src: files/etc/init.d/audio_config
+    dest: /etc/init.d/audio_config
+
+- name: install in rc.local
+  become: yes
+  lineinfile: 
+    path: /etc/rc.local
+    regexp: /etc/init.d/audio_config
+    line: /etc/init.d/audio_config
+    insertbefore: exit 0
+    
+- name: enable rc.local in systemctl
+  become: yes
+  service:
+    name: rc.local
+    enabled: yes
+    started: yes
+...

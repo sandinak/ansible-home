@@ -1,5 +1,5 @@
 ---
 therm_sensors:
   kernel_modules:
-    - w1-gpio
-    - w1-therm
+    - w1_gpio
+    - w1_therm

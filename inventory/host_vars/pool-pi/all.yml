@@ -1,0 +1,5 @@
+---
+temp_sensor:
+  pool:
+    preheater: 28-03119779e64a
+    postheater: 28-031297791477

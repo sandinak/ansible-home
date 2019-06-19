@@ -1,0 +1,14 @@
+---
+- name: get latest version of pirelays
+  become: homebridge
+  git: 
+    url: https://github.com/dakl/homebridge-pirelays.git
+    dest: /home/homebridge/homebridge-pirelays
+    
+- name: build pirelays
+  become: homebrige 
+  shell: nmp install
+  args:
+    chdir: /home/homebridge/homebridge-pi-relays
+    creates: 
+  

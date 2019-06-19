@@ -4,5 +4,6 @@
   gather_facts: yes
   roles:
 #    - raspi/airplay
+    - raspi/audio_config
     - raspi/squeezebox
     - raspi/wireless/disable_wifi_power_mgmt

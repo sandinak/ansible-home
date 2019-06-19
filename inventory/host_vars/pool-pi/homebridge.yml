@@ -1,0 +1,35 @@
+---
+homebridge_config:
+  description: "{{inventory_hostname}} homebridge "
+  bridge:
+    name: pool
+    username: "{{ansible_default_ipv4.macaddress | upper}}"
+    port: 51826
+    pin: 031-45-154
+  accessories:
+    # temp sensors
+    - accessory: DS18B20
+      name: temperature
+      device: "{{temp_sensor.pool.preheater}}"
+    - accessory: DS18B20
+      name: heater temperature
+      device: "{{temp_sensor.pool.postheater}}"
+
+    # relay
+    # https://github.com/dakl/homebridge-pirelays
+#    - accessory: Switch
+#      name: pump low
+#      pin: "11"
+#    - accessory: Switch
+#      name: pump medium
+#      pin: "12"
+#    - accessory: Switch
+#      name: pump high
+#      pin: "13"
+#    - accessory: Switch
+#      name: heater
+#      pin: "14"
+      
+
+      
+     

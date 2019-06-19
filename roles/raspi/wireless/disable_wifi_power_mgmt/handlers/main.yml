@@ -1,6 +1,6 @@
 ---
 - name: reboot raspi
   become: yes
-  reboot:
+  shell: reboot
 
 ...

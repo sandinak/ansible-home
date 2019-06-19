@@ -10,6 +10,7 @@ raspi_packages:
   - nmap
   - python-pip
   - collectd
+  - finger
 
 pip_packages:
   - pexpect
