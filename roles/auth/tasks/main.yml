@@ -1,35 +1,13 @@
 ---
-- name: deploy groups for each user that match name and uid
-  become: yes
-  group:
-    name: '{{item.name}}'
-    gid: '{{item.uid}}'
-  loop: "{{ users }}"
-  loop_control: 
-    label: "{{item.name}}"
 
-- name: deploy users
-  become: yes
-  user:
-    name: '{{item.name}}'
-    state: '{{item.state | default("present")}}'
-    uid: '{{item.uid}}'
-    group: '{{item.name}}'
-    groups: '{{item.groups}}'
-    home: '{{item.home | default("/home/" + item.name)}}'
-  loop: "{{ users }}"
+- include_tasks: user.yml
+  tags:
+    - auth
+    - users
+  loop: "{{users}}"
   loop_control: 
-    label: "{{item.name}}"
+    loop_var: user
+    label: "{{user.name}}"
   
-- name: deploy keys
-  become: yes
-  authorized_key:
-    state: present
-    user: '{{item.name}}'
-    manage_dir: yes
-    key: "{{ lookup('file', item.key_file ) }}"
-  loop: "{{ users }}"
-  loop_control: 
-    label: "{{item.name}}"
-  when: item.key_file is defined 
+
     

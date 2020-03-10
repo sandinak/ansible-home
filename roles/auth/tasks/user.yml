@@ -1,0 +1,35 @@
+---
+- name: configure user
+  become: yes
+  tags:
+    - user
+    - auth
+  block: 
+    - name: "{{user.name}} - deploy users group "
+      group:
+        name: '{{user.name}}'
+        gid: '{{user.uid}}'
+
+    - name: "{{user.name}} - deploy user "
+      become: yes
+      user:
+        name: '{{user.name}}'
+        state: '{{user.state | default("present")}}'
+        uid: '{{user.uid}}'
+        group: '{{user.name}}'
+        groups: '{{user.groups}}'
+        home: '{{user.home | default("/home/" + user.name)}}'
+      
+    - name: "{{user.name}} - deploy keys"
+      become: yes
+      authorized_key:
+        state: present
+        exclusive: no
+        user: '{{user.name}}'
+        manage_dir: yes
+        key: "{{ authorized_key }}"
+      loop: "{{ user.authorized_keys }}"
+      loop_control: 
+        loop_var: authorized_key
+        label: "key_id: {{ authorized_key.split(' ')[2] | default('unset') }}"
+      when: user.authorized_keys is defined 

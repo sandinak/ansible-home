@@ -1,0 +1,27 @@
+---
+
+users:
+  - name: branson
+    uid: 10652
+    gid: 20
+    password: $6$Cpn1U8RAQ1tlrYrT$x4Yzx4iCyqlJLFNLtEkpLFJlMXGk6mEkIJH3.TX6i93oYUZBGSsqSm/82PNxE3QADLts3S1UmK5AHIsy6F7h91
+    sudo: yes
+    groups: 
+      - root
+      - "{{sudo_group}}"
+    authorized_keys: 
+      - "{{ lookup('file','~/.ssh/id_rsa.pub') }}"
+    
+  - name: jnvouilloz
+    uid: 501
+    gid: 20
+    sudo: yes
+    groups:
+      - root
+      - "{{sudo_group}}"
+    authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDc4RQ2Z3lrmrzvNN0RUy7mfCaNN6/9d5egHCX0R1SMlt0yK7FVXSOuhmeXjJMTDd6UHYV6eay0SCyLUR1imMXUIKugcdsBYOEV/nH61jncOZxwEIRFo1+p00tM25PYShSnNiVIrmFir9xUUaLzFndcFZKz5oglRT9RYejU2m+4K7dFUtPPpSY+hrUEu9EikDK5uevAiYycf7yOzsCIbktuUx9l2nvVdIiWMmsfSx4AFqiKizRZQDhVMKdDnZRyaVl9Z/Cmppaun2ysNZRhulDHg2GOSl2spOtPAGME15X8NXpI6dzp9tJshHCS5aHBXiep1ZXCGx0OuYKpQvHst8th ichtar@ichtar
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFiMyIU5WDw8oL4pWEjPH6WHssaYzmWPmQ6rGiVtvTUg1Kimiw4ZTVDNz+EFH+ZwRrxcF0Uqw3Vlm7MiXjR/WSJ8XB+H8RtelufNY5k6rrxzzsHlinqGHhM9FadNhSbZqhTcNYRjITWtJ27EPHLM5WqhDvzTvcwOotwhKULgzztDu3kIVqzby8s/fhzmovbYN0JZXg5PWeSCdky0JJkffptuwF0gbrtcCKlHlVQQxSijgchwaPyIb/36S8gDa5siKWMYVB95RMJqzNdfJKfzu59GO9pIAXXeUl/Bi9310niqwgFTaQVACbgSPD316XwRJbLX/e9kzeusBjNRO9H5dz jevouill@JEVOUILL-M-P0ZU
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDxQeRYyfNyEjF2fCtgkO+9M1xuOgsS+7RtADPdbrPZeDgK5OQKoJnJZktTyQ+VZEV4REqRnPMRZZoNX0AVS9bXeukbArTx4jL+r9i3NkEyLxDvxMsO8A7ikqHrAiZs1e1n8bIhE9upM19GYarxYBW1qr0Vg/9gK/Uvim30uwNUhW1Bg2paPCla8zdK+w7ePqaTHjVCGI0jTrTuyOSzwIGZBrITli822khMl8Xggyuu8EKqJTHIQ6+RwEnQ3OQH1VD4laBrOBdgGihLivFrc7WCU0GXk9ARKZyOD91b+rq5CN0113d5whspoe/nR5wnqd6W4r4ChURq7NvJfMdNNqMJ pi@raspberrypi
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBV7ng7a61hs9UNtnua4wGhHphCXNQ+rh87ju9gnJQKpxgfKXmhyBKN77XlC41AFbp3GqyZ+nHezXDkd+UapQfJPUgqmRNC+BQfFyYtTC4N09U7F9k2zlCficzvEPwe7BVumoLALv6WQ99DLrqAq10XeOhkYsL1m1em6fv2Z1gmc4SrlROfw/OE3SUZgY8aDLT1iuB9AIiyU288mFvk/ACGCMPe10liiaEITKBUemjeAOxf9IyrT3sQRWaAxj3dlHDs8ZlfAk6NSHo/fNKpCpPCgUxlYYMr7PDRwSzE18ls8FQRyhdj9Yesj71NmD/vWcTm6+dj9Ntj0nZO9TZkNct root@raspberrypi
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCcMUEhtUVwrUtQINHLqaOB4YuCiT5ndm1sK7QCbvg7ZzvGOu2EAPVL72wg4TJfsixQjQzOnNh5leetxXXfRx04VzIOVPyfDxYXfI55IPxqqSVl5iTlDcUiZ2HgIfuOMKBpz6TZ9wKclUiaXs3rxZ0cS9qYkZbLbhmaaFyKt115e0p0ldAgCyWHCbUv4Fi2gjnTYtTHpqcsvcNAi7oiIMSUIqA0JB+q7lI/AdFg6i9XN7Y0rIQaOxuPtN5jUXz1BvBiXuAtNL4atVq6zQCoZLongQaVQ8FOcYOoSk9rmy4IV0SvqPFXojsfT28VuBtOwcit44+DnnoOTkIyjyCVpcNn root@fritz.box
