@@ -1,0 +1,19 @@
+---
+- name: install mysql
+  become: yes
+  tags: 
+    - mysql
+    - mariadb
+  package:
+    state: present
+    name: mariadb-devel
+    
+- name: set to startup
+  become: yes
+  tags: 
+    - mysql
+    - mariadb
+  service:
+    name: mariadb
+    state: started
+    enabled: yes

@@ -1,0 +1,31 @@
+---
+- name: install fail2ban
+  become: yes
+  tags: fail2ban
+  block:
+    - name: install packages
+      package:
+        state: present
+        name: "{{item}}"
+      loop: "{{fail2ban_packages}}"
+      
+    - name: update jail.conf
+      lineinfile: 
+        state: present
+        path: /etc/fail2ban/jail.conf
+        regexp: "^{{item.key}} =.*"
+        line: "{{item.key}} = {{item.value}}"
+      loop: "{{fail2ban.jail_conf | dict2items}}"
+      loop_control: 
+        label: "{{item.key}}"
+ 
+      notify: restart fail2ban
+
+    - name: update jail.local
+      template:
+        src: jail.local.j2
+        dest: /etc/fail2ban/jail.local
+        owner: root
+        group: root
+        mode: 0600
+      notify: restart fail2ban

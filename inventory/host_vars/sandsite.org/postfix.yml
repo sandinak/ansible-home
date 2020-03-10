@@ -1,0 +1,108 @@
+---
+postfix:
+  main_cf:
+    inet_interfaces: all
+    mynetworks: 192.168.0.0/16, 127.0.0.0/8, localhost
+    home_mailbox: Maildir/
+    mydomain: "{{ ansible_nodename }}"
+    myhostname: '$mydomain'
+ 
+    # spam
+    # disable_vrfy_command: "yes"
+    smtpd_client_restrictions: sleep 5
+    smtpd_delay_reject: 'no'
+    smtpd_error_sleep_time: 30
+    smtpd_soft_error_limit: 10
+    smtpd_hard_error_limit: 20
+
+    # TLS
+    # https://blog.tinned-software.net/setup-postfix-with-smtp-auth-and-tls-on-centos/
+    smtpd_use_tls: 'yes'
+    smtpd_tls_security_level: may
+    smtpd_tls_loglevel: 0
+    smtpd_tls_received_header: 'yes'
+    # smtpd_tls_auth_only: 'no'
+    smtpd_tls_cert_file: /etc/letsencrypt/live/{{ansible_nodename}}/fullchain.pem
+    smtpd_tls_key_file: /etc/letsencrypt/live/{{ansible_nodename}}/privkey.pem
+    smtpd_tls_session_cache_database: btree:/var/lib/postfix/smtpd_scache
+    smtpd_tls_session_cache_timeout: 10800s
+    
+    # SMS 
+    smtp_use_tls: 'yes'
+    smtp_tls_security_level: may
+    relayhost: '[email-smtp.us-east-1.amazonaws.com]:587'
+    smtp_sasl_auth_enable: 'yes'
+    smtp_sasl_security_options: noanonymous
+    smtp_sasl_password_maps: hash:/etc/postfix/sasl_passwd
+    smtp_tls_note_starttls_offer: 'yes'
+    smtp_tls_CAFile: /etc/ssl/certs/ca-bundle.crt
+
+    # sasl
+    smtpd_sasl_auth_enable: 'yes'
+    smtpd_sasl_local_domain: ''
+    broken_sasl_auth_clients: 'yes'
+    smtpd_sasl_type: dovecot
+    smtpd_sasl_security_options: noanonymous
+    smtpd_sasl_path: private/auth
+    smtpd_sasl_authenticated_header: 'no'
+    smtpd_sender_restrictions: 
+      permit_sasl_authenticated,
+      permit_mynetworks,
+      permit
+      
+    smtpd_recipient_restrictions: 
+      permit_sasl_authenticated,
+      permit_mynetworks,
+      reject_non_fqdn_sender,
+      reject_non_fqdn_recipient,
+      reject_unknown_sender_domain,
+      reject_rbl_client sbl.spamhaus.org,
+      reject_rbl_client cbl.abuseat.org
+#      reject_unauth_destination,
+#      reject_invalid_hostname,
+#      reject_non_fqdn_hostname,
+
+  master_cf:
+    submission: |
+      submission inet n       -       -       -       -       smtpd
+        -o smtpd_sasl_auth_enable=yes
+        -o smtpd_sasl_type=dovecot
+        -o smtpd_sasl_security_options=noanonymous
+        -o smtpd_sasl_path=private/auth
+        -o smtpd_sasl_local_domain=$mydomain
+        -o syslog_name=postfix/submission
+        -o smtpd_tls_security_level=encrypt
+        -o milter_macro_daemon_name=ORIGINATING
+
+    smtps: 
+      smtps     inet  n       -       n       -       -       smtpd
+        -o syslog_name=postfix/smtps
+        -o smtpd_tls_wrappermode=yes
+        -o smtpd_sasl_auth_enable=yes
+        -o smtpd_reject_unlisted_recipient=no
+        -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+        -o milter_macro_daemon_name=ORIGINATING
+      
+
+  aliases: 
+    mailer-daemon: postmaster
+    postmaster: root
+    info: root
+    root: branson
+
+dovecot: 
+  config:
+    mail_location: "maildir:~/Maildir:LAYOUT=fs"
+    # my cert
+    ssl_cert: "</etc/letsencrypt/live/{{ansible_nodename}}/cert.pem"
+    ssl_key: "</etc/letsencrypt/live/{{ansible_nodename}}/privkey.pem"
+    # client cert validation
+    ssl_verify_client_cert: 'yes'
+    ssl_ca: /etc/ssl/certs/ca-bundle.cr
+    
+    
+spamassassin:
+  report_safe: 0
+  required_score: 8.0
+  rewrite_header: Subject [SPAM]
+  

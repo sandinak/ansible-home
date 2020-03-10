@@ -1,0 +1,53 @@
+---
+- name: install spamassassin
+  become: yes
+  tags: spam
+  block:
+    - name: install spamassassin
+      package:
+        name: spamassassin
+
+    - name: update local.cf
+      template:
+        src: local.cf.j2
+        dest: /etc/mail/spamassassin/local.cf
+        mode: 0644
+        owner: root
+        group: root
+      notify: restart spamassassin
+
+    - name: create spamd group
+      group:
+        state: present
+        name: spamd
+ 
+    - name: create spamd user
+      user:
+        state: present
+        name: spamd
+        group: spamd
+        shell: /bin/false
+        home: /var/log/spamassassin
+     
+    - name: set perms on /var/log/spamassassin
+      file:
+        path: /var/log/spamassassin
+        mode: 0775
+        owner: spamd
+        group: spamd
+ 
+    - name: add service to postfix master.cf
+      lineinfile:
+        path: /etc/postfix/master.cf
+        regexp: "^spamassassin.*"
+        line: "spamassassin unix - n n - - pipe flags=R user=spamd argv=/usr/bin/spamc -e /usr/sbin/sendmail -oi -f ${sender} ${recipient}"
+      notify: restart postfix
+     
+    - name: enable contentfilter in master.cf
+      lineinfile:
+        path: /etc/postfix/master.cf
+        regexp: '^smtp\s+inet.*'
+        line: "smtp      inet  n       -       n       -       -       smtpd -o content_filter=spamassassin"
+      notify: restart postfix
+
+ 

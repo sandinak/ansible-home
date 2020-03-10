@@ -1,0 +1,15 @@
+---
+# https://linuxize.com/post/install-php-7-on-centos-7/
+
+php_repo_pkg: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+php_repo_name: remi-php73
+
+php_packages:
+  - php
+  - php-common
+  - php-opcache 
+  - php-mcrypt 
+  - php-cli 
+  - php-gd 
+  - php-curl 
+  - php-mysqlnd

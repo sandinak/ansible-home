@@ -10,4 +10,5 @@ nodejs_npm_packages:
   - homebridge-http-temperature-sensor
   - homebridge-gpio-services
   - homebridge-ds18b20
+  - homebridge-pi-thermostat
 ...

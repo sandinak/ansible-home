@@ -1,0 +1,6 @@
+---
+letsencrypt:
+  packages:  
+    - certbot
+    - python2-certbot-apache
+    - mod_ssl

@@ -1,0 +1,6 @@
+---
+openvpn_packages:
+  - openvpn 
+  - openvpn-devel 
+  - easy-rsa
+  

@@ -1,0 +1,25 @@
+---
+virtual_hosts:
+  # base site
+  sandsite.org:
+    aliases: 
+      - new.sandsite.org
+      #- sandsecurity.com
+      #- sandsecurity.org
+    http_conf: 
+      ServerAlias: "*.sandsite.org"
+      DirectoryIndex: index.html index.php
+
+    document_root_settings:
+      Options: FollowSymLinks
+      AllowOverride: All
+      Require: all granted
+
+  clanmathesonusa.org:
+    http_conf:
+      ServerAlias: "*.clanmathesonusa.org"
+ 
+  autoblame.com:
+    http_conf:
+      ServerAlias: "*.autoblame.com"
+ 

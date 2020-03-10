@@ -1,0 +1,3 @@
+{% for alias in postfix.aliases | dict2items %}
+{{ alias.key }} {{ alias.value }}
+{% endfor %} 

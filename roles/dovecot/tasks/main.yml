@@ -1,0 +1,15 @@
+---
+- name: install dovecot
+  become: yes
+  tags: dovecot
+  package: 
+    state: present
+    name: dovecot
+    
+- name: setup local template
+  become: yes
+  tags: dovecot
+  template: 
+    src: local.conf
+    dest: /etc/dovecot/local.conf
+  notify: restart dovecot

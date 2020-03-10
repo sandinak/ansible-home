@@ -4,7 +4,9 @@
   group:
     name: '{{item.name}}'
     gid: '{{item.uid}}'
-  with_items: "{{users}}"
+  loop: "{{ users }}"
+  loop_control: 
+    label: "{{item.name}}"
 
 - name: deploy users
   become: yes
@@ -15,4 +17,19 @@
     group: '{{item.name}}'
     groups: '{{item.groups}}'
     home: '{{item.home | default("/home/" + item.name)}}'
-  with_items: "{{ users }}"
+  loop: "{{ users }}"
+  loop_control: 
+    label: "{{item.name}}"
+  
+- name: deploy keys
+  become: yes
+  authorized_key:
+    state: present
+    user: '{{item.name}}'
+    manage_dir: yes
+    key: "{{ lookup('file', item.key_file ) }}"
+  loop: "{{ users }}"
+  loop_control: 
+    label: "{{item.name}}"
+  when: item.key_file is defined 
+    

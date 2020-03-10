@@ -1,0 +1,3 @@
+{% for setting in spamassassin | default({}) | dict2items %}
+{{setting.key}} {{setting.value}}
+{% endfor %}

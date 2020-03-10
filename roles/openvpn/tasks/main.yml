@@ -1,0 +1,27 @@
+---
+- name: install openvpn and dependencies
+  tags: openvpn
+  become: yes
+  block: 
+    - name: install openvpn 
+      package: 
+        state: present
+        name: "{{item}}"
+      loop: "{{openvpn_packages}}"
+
+    - name: copy server files around
+      copy: 
+        src: server.conf
+        dest: /etc/openvpn/server.conf
+
+    - name: copy client files 
+      copy: 
+        src: clients
+        dest: /etc/openvpn/clients/
+
+    - name:  enable service
+      service: 
+        name: openvpn
+        state: started
+        enabled: yes
+

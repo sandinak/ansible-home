@@ -1,0 +1,3 @@
+ifconfig-push 10.8.0.20 255.255.255.0
+iroute 172.16.254.0 255.255.255.0
+client-to-client

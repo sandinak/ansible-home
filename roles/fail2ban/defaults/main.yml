@@ -1,0 +1,7 @@
+---
+fail2ban_packages:
+  - fail2ban
+  - fail2ban-mail
+  - fail2ban-hostsdeny
+  - fail2ban-systemd
+  - fail2ban-tests

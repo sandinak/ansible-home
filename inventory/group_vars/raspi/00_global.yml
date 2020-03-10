@@ -3,6 +3,8 @@
 ansible_user: pi
 raspi_default_password: raspberry
 
+sudo_group: sudo
+
 # use the site pw if set
 #ansible_ssh_pass: "{{ default_password }}"
 

@@ -1,0 +1,23 @@
+---
+- name: configure httpd
+  become: yes
+  tags: httpd
+  block: 
+  - name: install packages
+    package: 
+      state: present
+      name: "{{ httpd.packages }}"
+
+  - name: create {{httpd.sites_dir}} for virtual_hosts
+    file: 
+      state: directory
+      path: "{{httpd.sites_dir}}"
+      mode: 0755 
+      owner: root
+      group: root
+
+  - include_tasks: virtual_host.yml
+    loop: "{{ virtual_hosts | dict2items }}"
+    loop_control:
+      loop_var: vhost
+      label: "{{vhost.key}}"

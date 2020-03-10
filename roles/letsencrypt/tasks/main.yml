@@ -1,0 +1,27 @@
+---
+- name: install letsencrypt
+  become: yes
+  tags: 
+    - letsencrypt
+    - certs
+    - vhost
+  block:
+    - name: install epel-release
+      package: 
+        state: present
+        name: epel-release
+
+    - name: install certbot and requirements
+      package: 
+        state: present
+        name: "{{letsencrypt.packages}}"
+        
+    - name: configure for each virtual host 
+      include_tasks: certbot.yml
+      loop: "{{ virtual_hosts | dict2items}}"
+      loop_control:
+        loop_var: vhost
+        label: "{{ vhost.key }}"
+      
+ 
+ 

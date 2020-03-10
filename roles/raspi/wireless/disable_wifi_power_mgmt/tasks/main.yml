@@ -6,3 +6,4 @@
     regexp: "wireless-power off"
     line: "wireless-power off"
   notify: reboot raspi
+...

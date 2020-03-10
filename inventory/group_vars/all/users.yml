@@ -8,5 +8,5 @@ users:
     sudo: yes
     groups: 
       - root
-      - sudo 
-    
+      - "{{sudo_group}}"
+    key_file: ~/.ssh/id_rsa.pub

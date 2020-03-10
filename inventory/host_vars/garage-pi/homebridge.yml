@@ -1,0 +1,21 @@
+---
+homebridge_config:
+  description: "{{inventory_hostname}} homebridge "
+  bridge:
+    name: garage
+    username: "{{ansible_default_ipv4.macaddress | upper}}"
+    port: 51826
+    pin: 224-71-001
+  accessories:
+    # temp sensors
+    # https://github.com/dakl/homebridge-pirelays
+    - accessory: Switch
+      name: Outside Leds
+      pin: "11"
+
+nodejs_npm_packages:
+  - homebridge
+#  - homebridge-gpio-services
+#  - homebridge-ds18b20
+#  - homebridge-pirelays
+     

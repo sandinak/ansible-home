@@ -1,0 +1,7 @@
+---
+- name: configure homebridges
+  hosts: pi-homebridge
+  gather_facts: yes
+  roles:
+    - raspi/homebridge
+...

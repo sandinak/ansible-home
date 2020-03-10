@@ -1,0 +1,7 @@
+---
+httpd:
+  sites_dir: /var/www/sites
+  packages: 
+  - httpd
+  - httpd-tools
+  - mod_ssl

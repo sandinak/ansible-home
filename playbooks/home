@@ -7,6 +7,9 @@ pool-pi
 pool-pi-dev
 deck-pi
 sub-pi
+doghouse-pi mac_address=B8:27:EB:70:84:4A ansible_host=192.168.20.119
+
+
 
 [pool]
 pool-pi 
@@ -14,6 +17,10 @@ pool-pi-dev
 
 [dev]
 pool-pi-dev
+
+[pi-homebridge]
+pool-pi
+garage-pi
 
 [pi-webcam]
 garage-pi
@@ -30,3 +37,6 @@ val
 [home:children]
 raspi
 macs
+
+[amazon]
+aws ansible_connection=local

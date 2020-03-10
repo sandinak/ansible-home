@@ -1,0 +1,32 @@
+---
+- name: "{{vhost.key}} - make sure dir {{httpd.sites_dir}}/{{ vhost.key }} exists"
+  file:
+    state: directory
+    path: "{{httpd.sites_dir}}/{{vhost.key}}"
+    mode: 0755
+    owner: root
+    group: root
+
+- name: "{{vhost.key}} - write configuration /etc/httpd/conf.d/{{vhost.key}}.conf"
+  template: 
+    src: virtual_host.conf.j2
+    dest: /etc/httpd/conf.d/{{vhost.key}}.conf
+  notify: restart httpd
+
+- name: "{{vhost.key}} - check for keyfile /etc/letsencrypt/live/{{vhost.key}}/cert.pem"
+  become: yes
+  changed_when: false
+  stat:
+    path: /etc/letsencrypt/live/{{vhost.key}}/cert.pem
+  register: _certfile
+
+- name: "{{vhost.key}} - if no remove letsencrypt lines in virtualhost config"
+  become: yes
+  lineinfile: 
+    state: absent
+    path: "/etc/httpd/conf.d/{{vhost.key}}.conf"
+    backrefs: yes
+    regexp: '.*letsencrypt.*'
+  when: _certfile.stat.exists is not defined or 
+        not _certfile.stat.exists
+  

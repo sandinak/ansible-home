@@ -1,0 +1,16 @@
+---
+- name: configure ec2 server
+  hosts: sandsite.org
+  roles: 
+    - base
+    - auth
+    - php
+    - httpd
+    - letsencrypt
+    - dovecot
+    - postfix
+    - spamassassin
+    - mariadb
+#    - openvpn
+    - fail2ban
+    - squid

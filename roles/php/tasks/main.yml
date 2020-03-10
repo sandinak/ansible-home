@@ -1,0 +1,31 @@
+---
+- name: enable dependencies
+  become: yes
+  tags: php
+  package: 
+    name: "{{item}}"
+  loop: 
+    - epel-release 
+    - yum-utils
+
+- name: install {{php_repo_pkg}}
+  become: yes
+  tags: php
+  yum: 
+    state: present
+    name:  http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+  register: _php_repo
+
+- name: enable  {{php_repo_name}}
+  tags: php
+  become: yes
+  shell: yum-config-manager 
+    --enable {{php_repo_name}}
+  when: _php_repo is changed
+
+- name: install php and packages
+  become: yes
+  tags: php
+  package:
+    state: present
+    name: "{{ php_packages }}"

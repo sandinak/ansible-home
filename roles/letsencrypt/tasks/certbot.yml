@@ -1,0 +1,81 @@
+---
+# do we have a certfile configured
+- name: "{{vhost.key}} - get certpath from apache "
+  changed_when: false
+  failed_when: false
+  shell: 
+    grep SSLCertificateFile /etc/httpd/conf.d/{{vhost.key}}.conf |
+    awk '{ print $3 }'
+  register: _certpath
+ 
+# does it exist 
+- name: "{{vhost.key}} - check for certfile {{_certpath.stdout}} "
+  become: yes
+  changed_when: false
+  stat:
+    path: _certpath.stdout 
+  register: _certfile
+  when: _certpath.stdout | length > 0
+
+# if not .. remove the lines that point at it
+- name: "{{vhost.key}} - if no file, remove letsencrypt lines in virtualhost config"
+  become: yes
+  lineinfile: 
+    state: absent
+    path: "/etc/httpd/conf.d/{{vhost.key}}.conf"
+    backrefs: yes
+    regexp: '.*letsencrypt.*'
+  when: _certfile.stat is not defined or 
+        not _certfile.stat.exists
+
+# if so .. check to see if it needs renewal
+- name: "{{vhost.key}} - if exists, check to see if expire in 30 days"
+  become: yes
+  check_mode: no
+  failed_when: false
+  changed_when: false
+  shell: /bin/openssl x509 
+    -noout 
+    -checkend 2592000
+    -in {{_certpath.stdout}}
+  register: _cert_state
+  when: 
+    - _certfile.stat is defined
+    - _certfile.stat.exists is defined 
+    - _certfile.stat.exists
+
+- name: "{{vhost.key}} - run certbot if needed"
+  become: yes
+  when: _certpath.stdout | length == 0 or
+        _certfile.stat is not defined or 
+        not _certfile.stat.exists or
+        _cert_state.rc == 1
+  shell: certbot 
+    --noninteractive
+    --no-eff-email
+    --agree-tos
+    --reuse-key
+    --renew-with-new-domains
+    --apache
+    --no-redirect
+    -d {{vhost.key}}
+    {{vhost.value.aliases | 
+      default([]) | 
+      map('regex_replace', '(.*)','-d \1') |
+      join(' ' ) }}
+
+- name: "{{vhost.key}} - set a 30 day cronjob"
+  become: yes
+  cron:
+    state: present
+    day: 1
+    hour: 12
+    minute: 0
+    name: certbot {{vhost.key}}
+    job: /bin/certbot renew 
+      -d {{vhost.key}}
+      {{vhost.value.aliases | 
+        default([]) | 
+        map('regex_replace', '(.*)','-d \1') |
+        join(' ' ) }}
+

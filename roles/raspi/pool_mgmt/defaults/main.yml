@@ -1,0 +1,10 @@
+---
+pool_mgmt_pkgs:
+  - nginx
+
+pool_mgmt_pip_pkgs:
+  - flask
+  - flask-jsonpify
+  - flask-sqlalchemy
+  - flask-restful
+  

@@ -1,0 +1,15 @@
+
+
+# generic virtual hosts
+{% for alias in postfix.virtuals | default({}) | dict2items %}
+{{ alias.key }} {{ alias.value | default('') }}
+{% endfor %} 
+
+# fallback all virtual hosts
+{% for site in virtual_hosts | default({}) | dict2items %}
+{% if site.value.aliases is defined %}
+{% for alias in site.value.aliases | default([]) %}
+{{ alias }}
+{% endfor %}
+{% endif %}
+{% endfor %} 

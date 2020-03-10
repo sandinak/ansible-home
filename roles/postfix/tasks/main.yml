@@ -1,0 +1,59 @@
+---
+- name: 
+  become: yes
+  when: postfix | length > 0
+  tags: postfix
+  block: 
+    - name: install postfix 
+      package: 
+        state: present
+        name: "{{item}}"
+      loop: "{{postfix_packages}}"
+
+    # we don't reformat this 
+    - name: configure postfix
+      lineinfile: 
+        path: /etc/postfix/main.cf
+        regexp: '^{{ item.key }}\s?=.*'
+        line: "{{item.key}} = {{item.value}}"
+      loop: "{{ postfix.main_cf | dict2items }}"
+      loop_control:
+        label: "{{ item.key }}"
+      when: postfix.main_cf | length > 0
+      notify: restart postfix
+      
+    - name: configure blocks in master.cf
+      blockinfile: 
+        state: present
+        path: /etc/postfix/master.cf
+        block: "{{item.value}}"
+      loop: "{{ postfix.master_cf | default({}) | dict2items }}"
+      loop_control:
+        label: "{{ item.key }}"
+      notify: restart postfix
+
+    # these are authoritative
+    - name: configure aliases
+      template: 
+        src: aliases
+        dest: /etc/postfix/aliases
+      notify: rebuild aliases
+
+    - name: configure virtuals 
+      template: 
+        src: virtuals
+        dest: /etc/postfix/virtuals
+      when: virtual_hosts | length > 0 or 
+            ( postfix.virtuals is defined and 
+              postfix.virtuals | length > 0 )
+      notify: rebuild virtuals
+
+    - name: make sure services are up
+      service: 
+        state: started
+        enabled: yes
+        name: "{{item}}"
+      loop: 
+        - postfix
+        - saslauthd
+ 

@@ -1,0 +1,5 @@
+---
+postfix_packages:
+  - postfix
+  - cyrus-sasl
+  - cyrus-sasl-plain

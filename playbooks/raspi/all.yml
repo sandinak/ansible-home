@@ -41,5 +41,6 @@
     - raspi/iw_config
 
 - import_playbook: pool.yml
+- import_playbook: homebridge.yml
 - import_playbook: webcam.yml
 - import_playbook: audio.yml

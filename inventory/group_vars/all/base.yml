@@ -1,0 +1,9 @@
+---
+base: 
+  packages:
+    - lsof
+    - zsh
+    - tcpdump
+    - bind-utils
+    - mailx
+    - whois

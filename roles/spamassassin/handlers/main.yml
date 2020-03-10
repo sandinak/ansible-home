@@ -1,0 +1,14 @@
+---
+- name: restart spamassassin
+  become: yes
+  service:
+    name: spamassassin
+    state: restarted
+    enabled: yes
+
+- name: restart postfix
+  become: yes
+  service:
+    name: postfix
+    state: restarted
+    enabled: yes

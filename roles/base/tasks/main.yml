@@ -1,0 +1,21 @@
+---
+- name: base configurationm
+  become: yes
+  tags: base
+  block:
+    - name: set hostname to {{inventory_hostname}}
+      hostname: 
+        name: "{{inventory_hostname}}"
+
+    - name: install base packages
+      package: 
+        state: present
+        name: "{{base.packages}}"
+     
+    - name: remove colorls ( because it sucks ) 
+      file: 
+        state: absent
+        path: /etc/profile.d/{{item}}
+      loop: 
+        - colorls.sh
+        - colorls.csh

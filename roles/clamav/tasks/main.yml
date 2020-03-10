@@ -1,0 +1,24 @@
+---
+- name: install clamav
+  tags: clamav
+  become: yes
+  block:
+    - name: install clamav
+      package: 
+        state: present
+        name: clamav
+        
+    - name: edit configuration - enable socket
+      lineinfile:
+        path: /etc/clamd.d/scan.conf
+        regexp: '^#\s*LocalSocket\s+/var/run/clamd.scan/clamd.sock'
+        line: LocalSocket /var/run/clamd.scan/clamd.sock
+     
+    - name: editc configuration - remove example
+      lineinfile:
+        state: absent
+        path: /etc/clamd.d/scan.conf
+        regexp: '^Example'
+     
+    - 
+        

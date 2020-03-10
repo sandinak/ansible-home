@@ -1,0 +1,19 @@
+---
+- name: rebuild aliases
+  become: yes
+  shell: postalias aliases
+  args:
+    chdir: /etc/postfix
+
+- name: rebuild virtuals
+  become: yes
+  shell: postmap virtuals
+  args: 
+    chdir: /etc/postfix
+    
+- name: restart postfix
+  become: yes
+  service: 
+    state: restarted
+    name: postfix
+    

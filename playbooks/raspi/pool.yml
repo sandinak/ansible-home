@@ -1,10 +1,8 @@
 ---
-
 - name: configure pool
   hosts: pool
   gather_facts: yes
   roles:
     - raspi/therm_sensors
     - raspi/wireless/disable_wifi_power_mgmt
-    - raspi/homebridge
     - sandinak/pool_mgmt
