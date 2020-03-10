@@ -7,3 +7,7 @@ base:
     - bind-utils
     - mailx
     - whois
+
+os_packages:
+  redhat:
+    - yum-cron

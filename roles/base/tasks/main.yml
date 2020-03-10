@@ -11,7 +11,15 @@
       package: 
         state: present
         name: "{{base.packages}}"
-     
+        
+    - name: install RedHat Packages
+      package: 
+        state: present
+        name: "{{os_packages.redhat}}"
+      when: 
+        - os_packages.redhat is defined
+        - ansible_os_family == "RedHat"
+
     - name: remove colorls ( because it sucks ) 
       file: 
         state: absent

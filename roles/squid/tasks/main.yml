@@ -1,12 +1,15 @@
 ---
 - name: install squid
+  tags: squid
   become: yes
-  package: 
-    state: present
-    name: squid
+  block: 
+    - name: install squid
+      package: 
+        state: present
+        name: squid
 
-- name: start squid
-  service:
-    name: squid
-    state: started
-    enabled: yes
+    - name: start squid
+      service:
+        name: squid
+        state: started
+        enabled: yes
