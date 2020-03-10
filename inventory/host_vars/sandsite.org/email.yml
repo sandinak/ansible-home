@@ -82,7 +82,6 @@ postfix:
         -o smtpd_reject_unlisted_recipient=no
         -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
         -o milter_macro_daemon_name=ORIGINATING
-      
 
   aliases: 
     mailer-daemon: postmaster

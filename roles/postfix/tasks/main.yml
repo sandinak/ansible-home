@@ -33,11 +33,16 @@
       notify: restart postfix
 
     # these are authoritative
-    - name: configure aliases
+    - name: configure /etc/postfix/aliases
       template: 
         src: aliases
         dest: /etc/postfix/aliases
       notify: rebuild aliases
+
+    - name: configure /etc/aliases
+      template: 
+        src: aliases
+        dest: /etc/aliases
 
     - name: configure virtuals 
       template: 
