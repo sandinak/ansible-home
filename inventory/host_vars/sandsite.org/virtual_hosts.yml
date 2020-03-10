@@ -1,11 +1,14 @@
 ---
+default_virtual_host: sandsite.org 
+
 virtual_hosts:
   # base site
   sandsite.org:
     aliases: 
       - new.sandsite.org
-      #- sandsecurity.com
-      #- sandsecurity.org
+      - sandsecurity.com
+      - shmooconlabs.net
+      
     http_conf: 
       ServerAlias: "*.sandsite.org"
       DirectoryIndex: index.html index.php
@@ -16,12 +19,18 @@ virtual_hosts:
       Require: all granted
 
   clanmathesonusa.org:
+    aliases:
+      - clanmathesonusa.com
     http_conf:
       ServerAlias: "*.clanmathesonusa.org"
+      ServerAlias: "*.clanmathesonusa.com"
  
   autoblame.com:
+    aliases:
+      - autoblame.org
     http_conf:
       ServerAlias: "*.autoblame.com"
+      ServerAlias: "*.autoblame.org"
       
       
  

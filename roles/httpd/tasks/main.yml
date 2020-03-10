@@ -3,21 +3,35 @@
   become: yes
   tags: httpd
   block: 
-  - name: install packages
-    package: 
-      state: present
-      name: "{{ httpd.packages }}"
+    - name: install packages
+      package: 
+        state: present
+        name: "{{ httpd.packages }}"
 
-  - name: create {{httpd.sites_dir}} for virtual_hosts
-    file: 
-      state: directory
-      path: "{{httpd.sites_dir}}"
-      mode: 0755 
-      owner: root
-      group: root
+    - name: create {{httpd.sites_dir}} for virtual_hosts
+      file: 
+        state: directory
+        path: "{{httpd.sites_dir}}"
+        mode: 0755 
+        owner: root
+        group: root
 
-  - include_tasks: virtual_host.yml
-    loop: "{{ virtual_hosts | dict2items }}"
-    loop_control:
-      loop_var: vhost
-      label: "{{vhost.key}}"
+    - include_tasks: virtual_host.yml
+      loop: "{{ virtual_hosts | dict2items }}"
+      loop_control:
+        loop_var: vhost
+        label: "{{vhost.key}}"
+
+    - name: "write _default_ host config"
+      when: 
+        - default_virtual_host is defined
+        - virtual_hosts[default_virtual_host] is defined
+      template: 
+        src: _default_.conf.j2
+        dest: /etc/httpd/conf.d/_default_.conf
+      vars:
+        # this is ugly to match dict2items
+        vhost: 
+          key: "{{default_virtual_host}}"
+          value: "{{ virtual_hosts[default_virtual_host] }}"
+      notify: restart httpd    

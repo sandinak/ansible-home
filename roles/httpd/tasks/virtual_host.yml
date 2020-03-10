@@ -13,6 +13,8 @@
     dest: /etc/httpd/conf.d/{{vhost.key}}.conf
   notify: restart httpd
 
+
+
 - name: "{{vhost.key}} - check for keyfile /etc/letsencrypt/live/{{vhost.key}}/cert.pem"
   become: yes
   changed_when: false
@@ -29,4 +31,5 @@
     regexp: '.*letsencrypt.*'
   when: _certfile.stat.exists is not defined or 
         not _certfile.stat.exists
-  
+
+

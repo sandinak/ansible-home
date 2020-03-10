@@ -11,3 +11,4 @@ base:
 os_packages:
   redhat:
     - yum-cron
+    - rkhunter

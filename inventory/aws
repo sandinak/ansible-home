@@ -1,6 +1,6 @@
 
 [ec2_servers]
-sandsite.org ansible_host=54.162.52.138 ansible_user=centos 
+sandsite.org ansible_host=34.204.221.162 ansible_user=centos 
 
 [centos:children]
 ec2_servers

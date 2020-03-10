@@ -5,3 +5,5 @@ httpd:
   - httpd
   - httpd-tools
   - mod_ssl
+  - mod_evasive
+  - mod_security

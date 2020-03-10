@@ -1,0 +1,46 @@
+
+# rewrite rule 
+<VirtualHost _default_:80>
+  ServerName {{vhost.key}}
+
+  DocumentRoot "{{httpd.sites_dir}}/{{vhost.key}}"
+  
+  # always redirect https
+  RewriteEngine On
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+
+</VirtualHost>
+
+# {{vhost.key}} site
+<VirtualHost _default_:443>
+  # config
+  DocumentRoot "{{httpd.sites_dir}}/{{vhost.key}}"
+{% for directive in vhost.value.http_conf | default({}) | dict2items %}
+  {{ directive.key }} {{ directive.value }}
+{% endfor %}
+  
+  # SSL from letsencrypt
+  SSLCertificateFile /etc/letsencrypt/live/{{vhost.key}}/cert.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/{{vhost.key}}/privkey.pem
+  Include /etc/letsencrypt/options-ssl-apache.conf
+  SSLCertificateChainFile /etc/letsencrypt/live/{{vhost.key}}/chain.pem
+  
+{% if 'document_root_settings' in vhost.value %}
+  # DocumentRoot directory
+  <Directory {{httpd.sites_dir}}/{{vhost.key}}>
+{% for setting in vhost.value.document_root_settings | dict2items %}
+    {{setting.key}} {{setting.value}}
+{% endfor %}
+  </Directory>
+{% endif %}
+{% if 'directories' in vhost.value %}
+  # Other Directories
+{% for dir in vhost.value.directories %}
+  <Directory {{httpd.sites_dir}}/{{vhost.key}}/{{dir.key}}>
+{% for setting in dir.value | dict2items %}
+    {{setting.key}} {{setting.value}}
+{% endfor %}
+  </Directory>
+{% endfor %}
+{% endif %}
+</VirtualHost>
