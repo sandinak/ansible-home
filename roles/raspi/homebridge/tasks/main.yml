@@ -1,81 +1,70 @@
 ---
-- name: install homebridge
-  tags: homebridge
+- name: install node.js repository
+  shell:
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
+  args:
+    creates: /etc/apt/sources.list.d/nodesource.list
+
+- name: install apt packages {{ nodejs_apt_packages }}
   become: yes
-  block:
-    - name: install apt packages
-      apt:
-        name: "{{ nodejs_apt_packages }}"
+  apt:
+    name: "{{ nodejs_apt_packages }}"
+  register: node_js_installation 
 
-    - name: install homebridge
-      become: yes
-      npm:
-        state: present
-        global: yes
-        name: "{{item}}"
-      with_items: "{{nodejs_npm_packages}}" 
+- name: install/update npm
+  become: yes
+  npm: 
+    name: npm
+    global: yes
+  when: node_js_installation is changed
 
-    - name: setup runtime group
-      become: yes
-      group: 
-        name: homebridge 
-        gid: 995
- 
-    - name: put pi user in group
-      become: yes
-      user:
-        name: pi
-        append: yes
-        groups: 
-          - homebridge
+# we do NOT use global installs here
+# should use ~pi/node_modules/.staging 
+- name: install/update homebridge 
+  become: yes
+  npm:
+    state: present
+    global: yes
+    name: "{{item}}"
+    unsafe_perm: yes
+  loop: "{{nodejs_npm_packages}}" 
 
-    - name: setup runtime user
-      become: yes
-      user:
-        name: homebridge 
-        uid: 998
-        group: 995
-        comment: homebridge system account
-        home: /home/homebridge
-        shell: /bin/bash
-        generate_ssh_key: no
-        create_home: yes
- 
-    - name: make setup dir  
-      become: yes
-      file:
-        state: directory
-        path: /var/lib/homebridge
-        owner: homebridge
-        group: homebridge
+- name: install and configure startup
+  become: yes
+  shell: /usr/local/bin/hb-service install --user homebridge
+  args:
+    creates: /etc/systemd/service/homebridge.service
 
-    - name: configure homebridge
-      tags: config
-      template:
-        src: "{{item}}.j2"
-        dest: "/{{item}}"
-        owner: homebridge
-        group: homebridge
-      with_items:
-        - var/lib/homebridge/config.json
-      notify: restart homebridge
+- name: make setup dir  
+  become: yes
+  file:
+    state: directory
+    path: /var/lib/homebridge
+    owner: homebridge
+    group: homebridge
 
-    - name: install startup files
-      become: yes
-      copy:
-        src: "{{item}}"
-        dest: "/{{item}}"
-      with_items:
-        - etc/default/homebridge
-        - etc/systemd/system/homebridge.service
+#- name: install pirelays
+#  include_tasks: pirelays.yml
 
-    - name: setup service
-      tags: config
-      become: yes
-      service:
-        name: homebridge
-        enabled: yes
-        state: started
+- name: configure homebridge
+  become: yes
+  tags: config
+  template:
+    src: "{{item}}.j2"
+    dest: "/{{item}}"
+    owner: homebridge
+    group: homebridge
+  with_items:
+    - var/lib/homebridge/config.json
+  notify: restart homebridge
+
+- name: startup service
+  tags: config
+  become: yes
+  service:
+    name: homebridge
+    enabled: yes
+    state: started
 
 ...
  

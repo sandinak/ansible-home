@@ -1,0 +1,6 @@
+---
+- name: setup for graphical console
+  hosts: pi_x
+  roles:
+    - lightdm
+    - chromium

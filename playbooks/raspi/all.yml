@@ -19,8 +19,8 @@
           when: raspi_default_password is defined
          
     - name: ping
-      ping: 
-         
+      ping:
+ 
     - name: push key from ~/.ssh/id_rsa.pub
       authorized_key:
         state: present

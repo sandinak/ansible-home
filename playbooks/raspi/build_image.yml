@@ -1,10 +1,70 @@
---- 
-- name: build image for raspi 
+---
+- name: setup raspi config
   hosts: pi-builder
-  tasks:
-    - name: detect sd card
+  gather_facts: no
+  vars:
+    iso_path: /Users/branson/Torrents/2020-02-13-raspbian-buster.img
+
+  pre_tasks:
+    - name: check for image
+      tags: always
+      stat: 
+        path: "{{iso_path}}"
+      register: _iso
+      failed_when: _iso.stat.exists is false
+      when: disk_device_name is not defined
+ 
+    - name: check for mounted drive with FAT_32
+      changed_when: false
+      tags: [ unmount, always ]
       shell: 
         diskutil list |
-        grep -A 3 Windows_FAT_32 |
-        head -1 |
-        awk '{ print $1 }' 
+        grep -B 4 FAT_32 |
+        grep \/dev\/ |
+        awk '{ print $1 }'
+      register: _diskutil_list
+      failed_when: _diskutil_list.stdout_lines | length == 0
+      when: disk_device_name is not defined
+
+    - name: extract disk name from {{ _diskutil_list }}
+      tags: [ unmount, always ]
+      set_fact:
+        disk_device_name: "{{ _diskutil_list.stdout.split('/')[-1] }}"
+      when: disk_device_name is not defined
+ 
+    - name: force unmount disk {{disk_device_name}}
+      tags: [ unmount ]
+      become: yes
+      shell: diskutil unmountDisk force {{disk_device_name}}
+
+    - name: burn image {{iso_path}} -> /dev/r{{disk_device_name}}
+      become: yes
+      shell: dd 
+        if={{iso_path}} 
+        of=/dev/r{{disk_device_name}}
+        bs=512k
+    
+    - name: check for mount of /Volumes/boot
+      shell: ls /Volumes/boot
+
+    - name: enable ssh on image
+      tags: post
+      file:
+        state: touch
+        path: /Volumes/boot/ssh
+
+  roles: 
+    - { role: pi-builder/wifi,
+        tags: [ wifi, post ] }
+        
+  post_tasks: 
+    - name: final unmount disk {{disk_device_name}}
+      tags: [ unmount, post ]
+      become: yes
+      shell: diskutil unmountDisk force {{disk_device_name}}
+    
+    - name: say finished
+      say: 
+        msg: burn on {{disk_device_name}} complete.
+        
+ 

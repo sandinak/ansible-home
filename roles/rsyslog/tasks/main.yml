@@ -1,0 +1,17 @@
+---
+- name: clean out old files
+  become: yes
+  file:
+    path: /etc/rsyslog.d/synology.conf
+    state: absent
+
+- name: setup rsyslog server
+  become: yes
+  template:
+    src: ansible.conf.j2
+    dest: /etc/rsyslog.d/ansible.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart rsyslog
+...

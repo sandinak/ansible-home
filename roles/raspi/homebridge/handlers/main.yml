@@ -3,4 +3,5 @@
   become: yes
   service:
     name: homebridge
+    enabled: yes
     state: restarted

@@ -48,6 +48,8 @@ postfix:
     smtpd_sender_restrictions: 
       permit_sasl_authenticated,
       permit_mynetworks,
+      reject_unauthenticated_sender_login_mismatch,
+      reject_unknown_sender_domain,
       permit
       
     smtpd_recipient_restrictions: 
@@ -57,10 +59,10 @@ postfix:
       reject_non_fqdn_recipient,
       reject_unknown_sender_domain,
       reject_rbl_client sbl.spamhaus.org,
-      reject_rbl_client cbl.abuseat.org
-#      reject_unauth_destination,
-#      reject_invalid_hostname,
-#      reject_non_fqdn_hostname,
+      reject_rbl_client cbl.abuseat.org,
+      reject_unauth_destination,
+      reject_invalid_hostname,
+      reject_non_fqdn_hostname
 
   master_cf:
     submission: |

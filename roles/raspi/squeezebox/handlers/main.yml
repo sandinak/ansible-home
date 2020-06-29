@@ -1,0 +1,6 @@
+- name: restart squeezelite
+  become: yes
+  service: 
+    name: squeezelite
+    state: restarted
+    enabled: yes

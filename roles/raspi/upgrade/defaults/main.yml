@@ -1,0 +1,21 @@
+---
+
+old_dist_release: "{{ansible_distribution_release}}"
+old_dist_release_uc_first: "{{old_dist_release[0]|upper}}{{old_dist_release[1:]}}"
+
+new_dist_release: buster
+new_dist_release_ucfirst: "{{new_dist_release[0]|upper}}{{new_dist_release[1:]}}"
+
+bad_packages: 
+  - timidity
+  - lxmusic
+  - gnome-disk-utility
+  - deluge-gtk
+  - evince
+  - wicd 
+  - wicd-gtk
+  - clipit
+  - usermode
+  - gucharmap
+  - gnome-system-tools
+  - pavucontrol

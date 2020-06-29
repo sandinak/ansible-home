@@ -1,0 +1,8 @@
+- name: restart squeezelite
+  hosts: pi_audio
+  tasks:
+    - name: restart squeezelite
+      become: yes
+      service:
+        name: squeezelite
+        state: restarted

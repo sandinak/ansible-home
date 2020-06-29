@@ -1,14 +1,16 @@
 ---
 - name: get latest version of pirelays
-  become: homebridge
+  become: yes
   git: 
-    url: https://github.com/dakl/homebridge-pirelays.git
-    dest: /home/homebridge/homebridge-pirelays
-    
+    repo: "{{pirelays_git_url}}"
+    dest: "/root/homebridge-pirelays"
+    force: yes
+
+
 - name: build pirelays
-  become: homebrige 
-  shell: nmp install
+  become: yes
+  shell: npm install -g --unsafe-perm --no-bin-links homebridge-pirelays
   args:
-    chdir: /home/homebridge/homebridge-pi-relays
-    creates: 
-  
+    chdir: "/root"
+    
+

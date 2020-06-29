@@ -1,0 +1,24 @@
+{
+  "name": "homebridge-pirelays",
+  "version": "0.0.3",
+  "description": "tool to manage pirelays",
+  "license": "MIT",
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  },
+  "author": {
+    "name": "Sergey Chemishkian"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/schemish/homebridge-pirelays.git"
+  },
+  "dependencies": {
+    "request": "^2.65.0",
+    "rpio": "^0.9.12"
+  }
+}

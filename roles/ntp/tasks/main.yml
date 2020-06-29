@@ -1,0 +1,16 @@
+---
+- name: install ntp
+  become: yes
+  package:
+    name: ntp
+    state: present
+    
+- name: configure ntp
+  become: yes
+  template: 
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart ntp

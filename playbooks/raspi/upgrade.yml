@@ -1,0 +1,5 @@
+---
+- name: perform an upgrade
+  hosts: raspi
+  roles:
+    - raspi/upgrade

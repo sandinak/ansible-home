@@ -1,0 +1,39 @@
+- name: update apt
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: change {{old_dist_release}} -> {{new_dist_release}} in files
+  become: yes
+  shell: "{{ item.cmd }} {{ item.file }}"
+  loop: 
+    - file: /etc/apt/sources.list
+      cmd: sed -i -e 's/{{old_dist_release}}/{{new_dist_release}}/' 
+    - file: /etc/apt/sources.list.d/rasp.list
+      cmd: sed -i -e 's/{{old_dist_release_ucfirst}}/{{new_dist_release_ucfirst}}/' 
+  loop_control:
+    label: "{{ item.file }}"
+  notify: reboot
+
+- name: cleanup list changes
+  become: yes
+  shell: apt-get remove apt-listchanges -y 
+  
+- name: perform dist upgrade
+  apt:
+    update_cache: yes
+    upgrade: dist 
+  notify: reboot
+
+- name: perform autoremove
+  shell: apt autoremove -y
+  
+- name: purge bad packages
+  apt:
+    name: "{{ bad_packages }}"
+    state: yes
+    purge: yes 
+    
+- name: perform autoclean
+  apt:
+    autoclean: yes

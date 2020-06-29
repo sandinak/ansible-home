@@ -1,6 +1,6 @@
 ---
 - name: configure pi-cameras
-  hosts: pi-webcam
+  hosts: pi_webcam
   gather_facts: yes
   roles:
     - raspi/webcam

@@ -1,0 +1,14 @@
+---
+- name: install packages {{lightdm_packages}}
+  become: yes
+  apt:
+    state: present 
+    name: "{{ lightdm_packages }}"
+
+- name: configure lightdm to startup at boot
+  become: yes
+  systemctl:
+    name: lightdm
+    state: started
+    enabled: true
+

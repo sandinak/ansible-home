@@ -1,6 +1,6 @@
 ---
 - name: configure pi-audio
-  hosts: pi-audio
+  hosts: pi_audio
   gather_facts: yes
   roles:
 #    - raspi/airplay

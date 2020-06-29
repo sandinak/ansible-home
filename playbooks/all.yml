@@ -1,9 +1,10 @@
 ---
 
-- import_playbook: raspi.yml
+#- import_playbook: raspi/all.yml
 
 - name: configure for site
-  hosts: all
-  roles: 
-    - auth
+  hosts: home
+  roles:
     - rsyslog
+    - ntp
+#    - auth

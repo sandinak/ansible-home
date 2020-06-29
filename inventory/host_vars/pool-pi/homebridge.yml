@@ -16,7 +16,7 @@ homebridge_config:
       device: "{{temp_sensor.pool.postheater}}"
 
     # relay
-    # https://github.com/dakl/homebridge-pirelays
+    # https://github.com/dakl/homebridge-relays
 #    - accessory: Switch
 #      name: pump low
 #      pin: "11"
@@ -33,9 +33,11 @@ homebridge_config:
 
 nodejs_npm_packages:
   - homebridge
-  - homebridge-http-switch
-  - homebridge-http-temperature-sensor
-  - homebridge-gpio-services
+  - homebridge-config-ui-x
+  - homebridge-relays
   - homebridge-ds18b20
-  - homebridge-pi-thermostat      
-     
+#  - homebridge-pi-thermostat
+#  - homebridge-http-switch
+#  - homebridge-http-temperature-sensor
+#  - homebridge-gpio-services
+#     

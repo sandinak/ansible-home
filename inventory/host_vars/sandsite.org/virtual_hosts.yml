@@ -8,6 +8,7 @@ virtual_hosts:
       - new.sandsite.org
       - sandsecurity.com
       - shmooconlabs.net
+      - home.sandsite.org
       
     http_conf: 
       ServerAlias: "*.sandsite.org"
@@ -17,6 +18,8 @@ virtual_hosts:
       Options: FollowSymLinks
       AllowOverride: All
       Require: all granted
+
+  ansipl.org:
 
   clanmathesonusa.org:
     aliases:

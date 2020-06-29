@@ -2,14 +2,16 @@
 localhost ansible_connection=local
 
 [raspi]
-garage-pi 
+garage-pi
 pool-pi
-pool-pi-dev
 deck-pi
-sub-pi
-doghouse-pi mac_address=B8:27:EB:70:84:4A ansible_host=192.168.20.119
+shed-pi
+doghouse-pi ansible_host=192.168.20.101
 
-
+[raspi_dev]
+dmx-followspot
+#sub-pi
+#pool-pi-dev
 
 [pool]
 pool-pi 
@@ -18,21 +20,25 @@ pool-pi-dev
 [dev]
 pool-pi-dev
 
-[pi-homebridge]
+[pi_homebridge]
 pool-pi
 garage-pi
 
-[pi-webcam]
+[pi_webcam]
 garage-pi
 
-[pi-ups]
+[pi_ups]
 garage-pi
 
-[pi-audio:children]
+[pi_audio:children]
 raspi
+
+[pi_x:children]
+shed-pi
 
 [macs]
 val
+music
 
 [home:children]
 raspi

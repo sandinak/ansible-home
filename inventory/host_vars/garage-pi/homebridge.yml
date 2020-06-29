@@ -9,13 +9,23 @@ homebridge_config:
   accessories:
     # temp sensors
     # https://github.com/dakl/homebridge-pirelays
-    - accessory: Switch
+    # https://www.waveshare.com/wiki/RPi_Relay_Board
+    - accessory: homebridge-relays.Switch
       name: Outside Leds
-      pin: "11"
+      pin: "37"
+    #- accessory: homebridge-pirelays.Switch
+    #  name: Outside Leds
+    #  pin: "38"
+    #- accessory: homebridge-pirelays.Switch
+    #  name: Outside Leds
+    #  pin: "40"
+    
+  platforms:  
+    - name: Config
+      port: 8581
+      platform: config
 
 nodejs_npm_packages:
   - homebridge
-#  - homebridge-gpio-services
-#  - homebridge-ds18b20
-#  - homebridge-pirelays
-     
+  - homebridge-config-ui-x
+  - homebridge-relays

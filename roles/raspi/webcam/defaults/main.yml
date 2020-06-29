@@ -10,7 +10,7 @@ webcam_packages:
   - libavdevice-dev 
   - libwebp-dev 
   - mysql-common 
-  - libmariadbclient18 
+  - libmariadbclient-dev
   - libpq5
   
 motion_deb_pkg_url: https://github.com/Motion-Project/motion/releases/download/release-4.2.1/pi_stretch_motion_4.2.1-1_armhf.deb

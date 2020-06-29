@@ -1,20 +1,15 @@
 [DEFAULT]
+{% for opt in fail2ban.jail_conf.iteritems() %}
+{{ opt.key }} = {{ opt.value }}
 
 # Override /etc/fail2ban/jail.d/00-firewalld.conf:
 banaction = iptables-multiport
 
-[sshd]
-enabled = true
+#jails
+{% for jail in fail2ban.jails.iteritems() %}
+[{{jail.key}}]
+{% for opt in jail.value.iteritems() %}
+{{opt.key}} = {{opt.value}}
+{% endfor %} 
 
-[postfix]
-enabled = true
-mode = more
-
-[mysqld-auth]
-enabled = true
-
-[apache-nohome]
-enabled = true
-
-[apache-noscript]
-enabled = true
+{% endfor %}

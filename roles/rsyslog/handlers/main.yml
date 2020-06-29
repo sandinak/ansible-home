@@ -1,7 +1,7 @@
 ---
-- name: restart rsyslogd
+- name: restart rsyslog
   become: yes
   service: 
-    name: rsyslogd
+    name: rsyslog
     state: restarted
 ...

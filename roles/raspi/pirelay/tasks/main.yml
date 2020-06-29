@@ -1,0 +1,8 @@
+- name: install packages
+  become: yes
+  apt:
+    name: "{{ pirelay_packages }}"
+    state: present
+    
+- name: setup persistent relay configuration
+  

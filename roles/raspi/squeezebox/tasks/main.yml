@@ -6,4 +6,10 @@
   async: 900
   poll: 10
 
-
+- name: set squeezelite server defaults
+  become: yes
+  lineinfile: 
+    path: /etc/default/squeezelite
+    regexp: '#?SB_SERVER_IP.*'
+    line: 'SB_SERVER_IP="{{ squeezebox_server }}"'
+  notify: restart squeezelite

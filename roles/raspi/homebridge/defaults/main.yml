@@ -1,11 +1,19 @@
 ---
+
+pirelays_git_url: https://github.com/sandinak/homebridge-pirelays.git
+ 
+node_modules: /usr/local/lib/node_modules
+
 nodejs_apt_packages:
   - nodejs
-  - libavahi-compat-libdnssd-dev
-  - npm
+  - gcc
+  - g++
+  - make
+  - python
 
+# not used by default
 nodejs_npm_packages:
-  - homebridge
+  - homebridge-config-ui-x
   - homebridge-http-switch
   - homebridge-http-temperature-sensor
   - homebridge-gpio-services

@@ -1,6 +1,6 @@
 ---
 - name: configure homebridges
-  hosts: pi-homebridge
+  hosts: pi_homebridge
   gather_facts: yes
   roles:
     - raspi/homebridge

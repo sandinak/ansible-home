@@ -1,4 +1,6 @@
 ---
+domain: home.sandsite.org
+
 base: 
   packages:
     - lsof
@@ -7,8 +9,12 @@ base:
     - bind-utils
     - mailx
     - whois
+    - ntpdate
 
 os_packages:
   redhat:
     - yum-cron
     - rkhunter
+
+ntp_servers:
+  - 192.168.1.1

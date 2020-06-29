@@ -1,0 +1,4 @@
+---
+lightdm_packages:
+  - lightdm
+  - lsession

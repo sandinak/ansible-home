@@ -1,4 +1,23 @@
 ---
+- name: set hostname
+  become: yes
+  hostname:
+    name: "{{inventory_hostname}}.{{domain}}"
+
+- name: set keyboard to US
+  become: yes
+  lineinfile:
+    src: /etc/default/keyboard
+    regexp: ^XKBLAYOUT=.*
+    line: XKBLAYOUT="use" 
+
+- name: set locale to US
+  become: yes
+  lineinfile:
+    src: /etc/default/locale
+    regexp: ^LANG=.*
+    line: LANG=en_US.UTF-8
+
 - name: run apt updates for all base packages
   become: yes
   apt: 
@@ -20,23 +39,23 @@
     name: "{{ pip_packages }}"
     state: present
  
-- name: run firmware updates
-  become: yes
-  expect: 
-    command: rpi-update
-    responses:
-      'proceed?':
-        - y
-    timeout: 300
-  register: _rpi_update
-  changed_when: '"reboot needed" in _rpi_update'
-  notify: reboot raspi 
+#- name: run firmware updates
+#  become: yes
+#  expect: 
+#    command: rpi-update
+#    responses:
+#      'proceed?':
+#        - y
+#    timeout: 300
+#  register: _rpi_update
+#  changed_when: '"reboot needed" in _rpi_update'
+#  notify: reboot raspi 
 
 - name: add default lines to config.txt
   become: yes
   lineinfile:
     path: /boot/config.txt
-    regexp: "{{ item }}"
+    regexp: "^{{ item }}.*"
     line: "{{ item }}"
   with_items: "{{ global.config_txt|default([]) + config_txt }}"
   notify: reboot raspi

@@ -5,4 +5,4 @@
   roles:
     - raspi/therm_sensors
     - raspi/wireless/disable_wifi_power_mgmt
-    - sandinak/pool_mgmt
+#    - sandinak/pool_mgmt
