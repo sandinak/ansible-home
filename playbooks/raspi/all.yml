@@ -37,6 +37,7 @@
   hosts: raspi
   gather_facts: yes
   roles:
+    - bashrc
     - raspi/config
     - raspi/iw_config
 

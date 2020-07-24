@@ -1,0 +1,8 @@
+---
+bashrc_lines:
+  - alias gps='ps auxwww | grep -v grep | grep '
+  - alias more=less
+  - alias gh='fc -l 100 | grep '
+  - alias h='fc -l'
+  - alias ls='ls -F'
+  

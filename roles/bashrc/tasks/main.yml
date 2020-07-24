@@ -1,0 +1,9 @@
+- name: update bashrc
+  become: yes
+  tags: bashrc
+  lineinfile: 
+    path: /etc/bash.bashrc
+    regexp: "^{{item.split('=') | first}}"
+    line: "{{item}}"
+  with_items: "{{bashrc_lines}}"  
+    
