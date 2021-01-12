@@ -7,8 +7,6 @@ virtual_hosts:
     aliases: 
       - new.sandsite.org
       - sandsecurity.com
-      - shmooconlabs.net
-      - home.sandsite.org
       
     http_conf: 
       ServerAlias: "*.sandsite.org"
@@ -19,21 +17,26 @@ virtual_hosts:
       AllowOverride: All
       Require: all granted
 
-  ansipl.org:
-
-  clanmathesonusa.org:
-    aliases:
-      - clanmathesonusa.com
-    http_conf:
-      ServerAlias: "*.clanmathesonusa.org"
-      ServerAlias: "*.clanmathesonusa.com"
- 
   autoblame.com:
     aliases:
       - autoblame.org
     http_conf:
       ServerAlias: "*.autoblame.com"
-      ServerAlias: "*.autoblame.org"
-      
-      
+ 
+  everblue.fish:
+    http_conf:
+      ServerAlias: "*.everblue.fish"
+
+#  hwahasterriblecustomerservice.com:
+#    http_conf: 
+#      ServerAlias: "*.hwahasterriblecustomerservice.com"
+#  ansipl.org:
+#    http_conf:
+#      ServerAlias: "*.ansipl.org"
+
+#  clanmathesonusa.org:
+#    aliases:
+#      - clanmathesonusa.com
+#    http_conf:
+#      ServerAlias: "*.clanmathesonusa.org"
  

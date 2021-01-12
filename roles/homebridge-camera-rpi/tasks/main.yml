@@ -1,0 +1,36 @@
+---
+- name: activate module
+
+- name: add module to config
+  become: yes
+  lineinfile:
+    path: /etc/modules
+    regexp: "^bcm2835-v412"
+    line: "^bcm2835-v412"
+  register: reboot pi
+
+- name: install ffmpeg
+  become: yes
+  apt:
+    name: ffmpeg
+    state: present
+
+- name: install homebridge-camera-rpi
+  become: yes
+  npm:
+    name: homebridge-camera-rpi
+
+- name: add homebridge to video group
+  become: yes
+  user:
+    name: homebridge
+    groups: 
+      - dialout
+      - audio
+      - video
+      - bluetooth
+      - gpio
+      - homebridge
+
+
+

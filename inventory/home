@@ -6,7 +6,7 @@ garage-pi
 pool-pi
 deck-pi
 shed-pi
-doghouse-pi ansible_host=192.168.20.101
+doghouse-pi
 
 [raspi_dev]
 dmx-followspot
@@ -24,8 +24,8 @@ pool-pi-dev
 pool-pi
 garage-pi
 
-[pi_webcam]
-garage-pi
+#[pi_webcam]
+#garage-pi
 
 [pi_ups]
 garage-pi
@@ -39,6 +39,10 @@ shed-pi
 [macs]
 val
 music
+
+[routers]
+gw          ansble_host=192.168.1.1 ansible_user=root
+doghouse    ansible_host=192.168.1.223 ansible_user=root
 
 [home:children]
 raspi

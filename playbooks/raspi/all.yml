@@ -40,6 +40,7 @@
     - bashrc
     - raspi/config
     - raspi/iw_config
+    - raspi/avahi-daemon
 
 - import_playbook: pool.yml
 - import_playbook: homebridge.yml

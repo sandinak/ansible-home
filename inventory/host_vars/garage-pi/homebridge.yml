@@ -1,4 +1,7 @@
 ---
+# disable ipv6
+ipv6: False
+
 homebridge_config:
   description: "{{inventory_hostname}} homebridge "
   bridge:
@@ -11,21 +14,29 @@ homebridge_config:
     # https://github.com/dakl/homebridge-pirelays
     # https://www.waveshare.com/wiki/RPi_Relay_Board
     - accessory: homebridge-relays.Switch
-      name: Outside Leds
+      name: Driveway Leds
       pin: "37"
-    #- accessory: homebridge-pirelays.Switch
-    #  name: Outside Leds
-    #  pin: "38"
-    #- accessory: homebridge-pirelays.Switch
-    #  name: Outside Leds
-    #  pin: "40"
+    - accessory: homebridge-pirelays.Switch
+      name: Side Leds
+      pin: "38"
+    - accessory: homebridge-pirelays.Switch
+      name: Pool Leds
+      pin: "40"
+
+  mdns: 
+    interface: "{{ansible_default_ipv4.address}}"
     
   platforms:  
     - name: Config
       port: 8581
       platform: config
 
+    - platform: rpi-camera
+      cameras:
+        - name: Garage Camera
+
 nodejs_npm_packages:
   - homebridge
   - homebridge-config-ui-x
   - homebridge-relays
+  - homebridge-camera-rpi

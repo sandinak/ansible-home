@@ -1,4 +1,9 @@
 ---
+- name: verify config has ipv6 disabled.
+  assert:
+    that: ipv6_disable == True
+    msg: ipv6 MUST be disabled for homebridge to work correctly. Update inventory.
+
 - name: install node.js repository
   shell:
     curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
@@ -31,9 +36,9 @@
 
 - name: install and configure startup
   become: yes
-  shell: /usr/local/bin/hb-service install --user homebridge
+  shell: /usr/bin/hb-service install --user homebridge
   args:
-    creates: /etc/systemd/service/homebridge.service
+    creates: /etc/systemd/system/homebridge.service
 
 - name: make setup dir  
   become: yes

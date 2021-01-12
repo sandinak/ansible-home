@@ -1,0 +1,23 @@
+---
+- name: install avahi
+  become: yes
+  apt:
+    name: "{{avahi_packages}}"
+    state: present
+
+- name: disable ipv6 in avahi-config
+  become: yes
+  lineinfile: 
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: "use-ipv6=.*"
+    line: "use-ipv6=no"
+  notify: restart avahi-daemon
+
+- name: set service to run at boot
+  become: yes
+  service:
+    name: avahi-daemon
+    enabled: yes
+    state: started
+
+...

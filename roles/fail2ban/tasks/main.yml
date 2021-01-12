@@ -28,4 +28,5 @@
         owner: root
         group: root
         mode: 0600
+      when: fail2ban.jails is defined
       notify: restart fail2ban

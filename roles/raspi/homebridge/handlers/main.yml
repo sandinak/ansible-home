@@ -5,3 +5,7 @@
     name: homebridge
     enabled: yes
     state: restarted
+
+- name: reboot pi
+  become: yes
+  reboot:

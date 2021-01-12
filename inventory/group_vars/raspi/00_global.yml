@@ -1,5 +1,7 @@
 ---
 
+ipv6: False
+
 ansible_user: pi
 raspi_default_password: raspberry
 

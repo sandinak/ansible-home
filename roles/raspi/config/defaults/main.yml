@@ -1,4 +1,5 @@
 ---
+ipv6: True
 config_txt: []
 
 raspi_packages:

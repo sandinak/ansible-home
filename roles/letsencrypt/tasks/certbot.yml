@@ -1,6 +1,7 @@
 ---
 # do we have a certfile configured
 - name: "{{vhost.key}} - get certpath from apache "
+  check_mode: no
   changed_when: false
   failed_when: false
   shell: 
@@ -46,6 +47,7 @@
 
 - name: "{{vhost.key}} - run certbot if needed"
   become: yes
+  tags: certbot
   when: _certpath.stdout | length == 0 or
         _certfile.stat is not defined or 
         not _certfile.stat.exists or

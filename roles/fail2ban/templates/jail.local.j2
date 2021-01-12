@@ -1,6 +1,7 @@
 [DEFAULT]
 {% for opt in fail2ban.jail_conf.iteritems() %}
 {{ opt.key }} = {{ opt.value }}
+{% endfor %}
 
 # Override /etc/fail2ban/jail.d/00-firewalld.conf:
 banaction = iptables-multiport
@@ -8,8 +9,7 @@ banaction = iptables-multiport
 #jails
 {% for jail in fail2ban.jails.iteritems() %}
 [{{jail.key}}]
-{% for opt in jail.value.iteritems() %}
+  {% for opt in jail.value.iteritems() %}
 {{opt.key}} = {{opt.value}}
-{% endfor %} 
-
+  {% endfor %} 
 {% endfor %}

@@ -26,6 +26,7 @@
       blockinfile: 
         state: present
         path: /etc/postfix/master.cf
+        marker: "# {mark} {{item.key}} ANSIBLE MANAGED BLOCK" 
         block: "{{item.value}}"
       loop: "{{ postfix.master_cf | default({}) | dict2items }}"
       loop_control:

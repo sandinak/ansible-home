@@ -7,14 +7,14 @@
 - name: set keyboard to US
   become: yes
   lineinfile:
-    src: /etc/default/keyboard
+    path: /etc/default/keyboard
     regexp: ^XKBLAYOUT=.*
     line: XKBLAYOUT="use" 
 
 - name: set locale to US
   become: yes
   lineinfile:
-    src: /etc/default/locale
+    path: /etc/default/locale
     regexp: ^LANG=.*
     line: LANG=en_US.UTF-8
 
@@ -26,6 +26,16 @@
     update_cache: yes
     autoremove: yes
     autoclean: yes
+
+- name: disable ipv6 at boot
+  become: yes
+  lineinfile: 
+    path: /boot/config.txt
+    backrefs: yes
+    regexp: '(^console=.*$)'
+    line: '\1 ipv6.disable=1'
+  notify: reboot raspi
+  when: ipv6 == False
  
 - name: install base packages {{ raspi_packages | join(',') }}
   become: yes
